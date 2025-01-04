@@ -57,12 +57,30 @@ int main(){
 
     // Outer loop
     for (l = 1; l <= 2; ++l) {
-    printf("Outer: %d\n", l);  
+    printf("Outer: %d\n", l);
 
     // Inner loop
     for (m = 1; m <= 3; ++m) {
-        printf(" Inner: %d\n", m);  
+        printf(" Inner: %d\n", m);
     }
+    }
+    //Break&continue in loop
+    int q = 0;
+    while (q < 10) {
+        if (q == 4) {
+        break;
+        }
+        printf("%d\n", q);
+        q++;
+    }
+    //Continue statement
+    int r = 0;
+    while (r < 10) {
+        if (r == 4) {
+        continue;
+        }
+        printf("%d\n", r);
+        r++;
     }
     return 0;
 }
