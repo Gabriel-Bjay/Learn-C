@@ -1,3 +1,7 @@
 niche_report*.csv
 niche_report*.md
 __pycache__/
+venv/
+voice_samples/
+*.wav
+*.srt
