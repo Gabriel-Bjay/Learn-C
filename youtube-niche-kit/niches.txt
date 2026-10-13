@@ -1,0 +1,15 @@
+# One niche per line:  search keyword : category [: your own RPM]
+# Categories with built-in RPMs: business, finance, education, technology, autos, news, health, entertainment, gaming
+# Each line costs ~102 of your 10,000 free daily API units.
+
+economics of owning:business
+how does make money:business
+company collapse:business
+tech company business model:technology
+car industry explained:autos
+personal finance explained:finance
+history documentary:education
+space explained:education
+psychology explained:education
+ai tools:technology
+geopolitics explained:news
