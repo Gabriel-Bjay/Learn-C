@@ -1,9 +1,10 @@
-# YouTube Niche Kit
+# YouTube Niche Kit — Work Rewired
 
-Everything for starting a faceless business & tech breakdowns channel on a $0 budget (plus a Claude subscription).
+Everything for launching **Work Rewired** ("The future of work decoded"), a faceless business & tech breakdowns channel, on a $0 budget (plus a Claude subscription).
 
 | File | What it is |
 |---|---|
+| `CHANNEL_SETUP.md` | Channel description, keywords, banner text and Studio settings (start here) |
 | `PROJECT_INSTRUCTIONS.md` | Paste into a Claude Project. It turns Claude into your researcher and scriptwriter |
 | `VIDEO_IDEAS.md` | 20 starter ideas, each backed by a format that's breaking out right now |
 | `voiceover.py` + `VOICEOVER.md` | Free AI voiceover and captions from your script, so there's no recording |

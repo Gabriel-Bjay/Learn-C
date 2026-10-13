@@ -1,4 +1,4 @@
-# 20 starter video ideas — business & tech breakdowns
+# 20 starter video ideas — Work Rewired ("The future of work decoded")
 
 Built from vidIQ outlier data pulled on **13 Oct 2026** (videos from the last 3–6 months on channels under 100k subscribers). "Breakout" = views ÷ that channel's average views.
 
@@ -27,14 +27,14 @@ Takeaway: the **format** carries these videos, not the channel size. Every row i
 Titles are working drafts. Every fact gets verified in the Claude Project's research step before scripting. ⭐ = suggested first 3 videos (easiest research + strongest proven format).
 
 ### Format 1 — The Economics of Owning a [X]
-1. ⭐ **The Economics of Owning an AI Data Center** — power bills, GPU depreciation, who actually profits (chipmakers, utilities, landlords). Rides the AI-infrastructure news cycle.
+1. ⭐ **The Economics of Owning an AI Data Center** — power bills, GPU depreciation, who actually profits (chipmakers, utilities, landlords) — and how few people it takes to run one. Rides the AI-infrastructure news cycle.
 2. **The Economics of Owning a Cell Tower** — why tower companies are one of the quietest money machines in tech (long leases, many tenants per tower).
-3. **The Economics of Owning a Bitcoin Mine** — electricity, halving cycles, hardware treadmill; when it pays and when it bankrupts.
+3. **How Upwork Makes Money on a $1,000 Freelance Job** — the platform's fees on both sides, what the freelancer actually keeps, and why fees keep rising. *(Fits the work angle perfectly.)*
 4. **The Economics of Owning an EV Charging Network** — why so many chargers lose money, and what the winners do differently.
 5. **The Economics of Owning a Chip Factory** — why a single fab costs tens of billions and only a few companies can play.
 
 ### Format 2 — How [Company] Makes Money on One [Unit]
-6. ⭐ **How Uber Makes Money on a Single $25 Ride** — break the fare into driver pay, fees, insurance, marketing, and what's left.
+6. ⭐ **How Uber Makes Money on a Single $25 Ride (And What the Driver Really Keeps)** — break the fare into driver pay, fees, insurance, marketing, and what's left; then the driver's costs (fuel, car, insurance).
 7. **How DoorDash Makes Money on a $30 Order** — delivery fee vs. commission vs. ads; the restaurant's side of the bill.
 8. **How Spotify Makes Money From One Subscriber** — where your monthly fee goes (labels, publishers, Spotify) and why margins stayed thin for years.
 9. **How a "Free" Mobile Game Makes Money** — the 2–5% of players who pay for everyone; ad revenue per player.
@@ -56,15 +56,15 @@ Titles are working drafts. Every fact gets verified in the Claude Project's rese
 
 ### Format 6 — The Math Nobody Shows You
 19. **Subscriptions vs Buying Software Outright: The Math Nobody Shows You** — 5- and 10-year cost of popular subscriptions vs one-time licences.
-20. **Is a $1,000 Phone Every 2 Years Worth It? The Real Math** — upgrade cycles, trade-in values, financing, and what the carriers earn.
+20. **How LinkedIn Makes Money From Your Job Search** — recruiter licences, Premium, ads; who pays when you look for work. *(Microsoft discloses LinkedIn revenue in its filings.)*
 
 ---
 
-## Suggested launch order
-1. #11 Quibi (easy research, dramatic story, everything is public)
-2. #6 Uber one-ride economics (proven unit-economics format)
-3. #1 AI data center economics (proven "economics of owning" format + hot topic)
-4. Then alternate formats, and double down on whichever of the first 3 does best.
+## Suggested launch order for Work Rewired
+1. **#6 Uber: one ride, and what the driver keeps.** The proven unit-economics format, with a direct "work" angle. Good first video for the channel's identity.
+2. **#1 The economics of owning an AI data center.** The proven "economics of owning" format plus the AI-and-work story. Ties to the tagline.
+3. **#11 Quibi: how to burn $1.75 billion.** Easy research and a dramatic story. Tests the "collapse" format.
+4. Then **#3 Upwork**, **#7 DoorDash** (with what the Dasher earns), and **#10 M-Pesa**, and double down on whichever format performs best.
 
 ## Re-checking demand later
 - Free: run `niche_scanner.py` with these as keywords (see README).
