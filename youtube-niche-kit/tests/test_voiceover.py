@@ -79,9 +79,12 @@ class VoiceoverTests(unittest.TestCase):
     @unittest.skipIf(np is None, "numpy not installed")
     def test_synthesize_timeline_and_srt(self):
         paragraphs = ["First sentence here. Second one.", "New paragraph."]
-        audio, cues = vo.synthesize(paragraphs, FakePipeline(), "am_michael", 1.0, pause=0.5, chunk_gap=0.1)
+        timings = []
+        audio, cues = vo.synthesize(paragraphs, FakePipeline(), "am_michael", 1.0, pause=0.5, chunk_gap=0.1,
+                                    timings=timings)
         # 3 one-second chunks + one 0.1s chunk gap + one 0.5s paragraph pause
         self.assertAlmostEqual(len(audio) / vo.SAMPLE_RATE, 3.6, places=2)
+        self.assertEqual(timings, [(0.0, 2.1), (2.6, 3.6)])
         self.assertAlmostEqual(cues[-1][0], 2.6, places=2)  # last paragraph starts after the pause
         with tempfile.TemporaryDirectory() as d:
             path = os.path.join(d, "out.srt")

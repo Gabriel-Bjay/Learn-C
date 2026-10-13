@@ -1,0 +1,73 @@
+# Quibi — shot list for make_video.py (converted from the script package, pages 7–9)
+# Format: paragraph(s): type: value     types: screenshot, chart, image, video, text, pexels
+# text cards: "Headline | smaller line"
+# Missing screenshots/charts render as placeholders, so you can make a draft any time.
+
+1: screenshot: screenshots/01_roku_wsj_headline.png
+1: text: 75+ SHOWS | sold to Roku for well under $100 million
+2: text: $1.75 BILLION | raised
+2: text: $1 BILLION | planned content spend, year one
+2: text: 6½ MONTHS | from launch to shutdown announcement
+3: text: How do you lose this much, this fast?
+4: chart: charts/chart2_year_one.png
+5: text: QUIBI = "QUICK BITES"
+5: text: Jeffrey Katzenberg | Founder · ex-head of Walt Disney Studios, DreamWorks co-founder
+5: text: Meg Whitman | CEO · ran eBay and HP
+6: pexels: person watching phone on train
+6: pexels: person using phone in coffee shop line
+7: chart: charts/chart1_funding.png
+7: screenshot: screenshots/07_variety_funding.png
+8: screenshot: screenshots/08_nexttv_ads.png
+8: text: ~$150 MILLION | first-year ads sold before launch
+9: chart: charts/chart8_timeline.png
+10: text: Still had cash when it quit
+11: text: How the money was supposed to flow | Revenue → Costs → Profit
+12: text: $4.99 a month with ads | $7.99 a month without
+13: text: Two big costs | Shows · Marketing
+14: chart: charts/chart3_cost_per_minute.png
+15: screenshot: screenshots/15_playback.png
+15: screenshot: screenshots/15_techcrunch.png
+16: text: ROUGH ESTIMATE | Year one, if everything had gone to plan
+17-19: chart: charts/chart2_year_one.png
+20: pexels: film production set
+20: text: Pay first. Earn later.
+21: text: Enjoying this? | A like or a subscribe really helps a small channel
+22: text: Bought? No. Rented.
+23: text: Year 0 → Year 2 → Year 7 | Exclusive → creators can re-sell → rights go back
+24: text: Paid like an owner. | Kept rights like a renter.
+25: pexels: house keys new home
+25: text: Mortgage vs rent | Only one leaves you with a house
+26: screenshot: screenshots/26_lightreading.png
+26: screenshot: screenshots/26_verge.png
+27: chart: charts/chart5_spend_vs_salvage.png
+28: text: Problem #2 | The funnel
+29: text: 1.7M downloads in week one | 3.5M downloads · 1.3M active users by May
+30: chart: charts/chart4_funnel.png
+30: screenshot: screenshots/30_verge_funnel.png
+31: text: "Incorrect by an order of magnitude" | Quibi spokesperson · all subscriber figures are estimates
+32: chart: charts/chart4_funnel.png
+33: text: The real problem | the top of the funnel
+34: text: 500,000 × $4.99 × 12 ≈ $30 million a year | Rough estimate
+35: chart: charts/chart6_where_money_went.png
+35: text: ≈ $2,800 | lost per paying subscriber (estimate)
+36: chart: charts/chart7_marketing.png
+36: screenshot: screenshots/36_ad_meter.png
+37: text: The best defence
+38: pexels: empty city street
+38: pexels: empty train station
+38: text: "I attribute everything that has gone wrong to coronavirus." | Jeffrey Katzenberg, The New York Times, May 2020
+39: pexels: family watching tv on couch
+39: text: +15.8 MILLION | Netflix subscribers added, Jan–Mar 2020
+40: screenshot: screenshots/40_emmys.png
+40: text: "We do think this deal represents a great value." | Rob Holmes, Roku
+41: pexels: scrolling vertical video on phone
+41: text: 200 BILLION | YouTube Shorts views a day (June 2025) · counting method changed March 2025
+42: chart: charts/chart6_where_money_went.png
+42: text: $300–350 MILLION RETURNED | sources differ
+43: text: Timing? | or the idea?
+44: screenshot: screenshots/44_medium_letter.png
+45: text: 3 numbers | ~$1B best-case loss · funnel 10× smaller · under 10¢ back per $1
+46: text: Paying for what was free | for shows it didn't fully own
+47-49: text: Builds what you own | vs. rents what you need
+50: text: Ask: what's left if it fails?
+51: text: NEXT | How Netflix makes money on a single subscription
