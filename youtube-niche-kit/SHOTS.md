@@ -4,7 +4,7 @@
 1. your voiceover (`.wav`) and its `.timings.json`, which `voiceover.py` writes automatically, and
 2. a **shot list** (`shots.txt`) that says what's on screen for each paragraph.
 
-It handles the timing, the slow zoom on images, text cards in Work Rewired colours, stock footage downloads, background music, and the final export. Your manual work is collecting screenshots, plus a quick watch-through at the end.
+It handles the timing, the slow zoom on images, text cards in Work Rewired colours, stock footage, background music, and the final export. Your manual work is collecting screenshots, plus a quick watch-through at the end.
 
 ---
 
@@ -18,15 +18,24 @@ pip install pillow              # draws the text cards
 ffmpeg -version                 # check: prints a version number
 ```
 
-### Free stock footage (optional but recommended)
-1. Create a free account at **pexels.com**, then open **pexels.com/api** and click **Your API Key**.
-2. Save the key once (PowerShell):
-   ```powershell
-   setx PEXELS_API_KEY "paste-your-key-here"
-   ```
-   Close and reopen PowerShell so it takes effect.
+### Free stock footage: pick one way
 
-Pexels videos are free to use, including in monetized videos, and don't need credit. Downloaded clips are saved in a `stock/` folder and reused on re-renders.
+**A. Automatic, with a free Pixabay key (recommended).**
+1. Create a free account at **pixabay.com**, then open **pixabay.com/api/docs/**. Your key is shown on that page once you're logged in.
+2. Save the key once (PowerShell), then close and reopen PowerShell:
+   ```powershell
+   setx PIXABAY_API_KEY "paste-your-key-here"
+   ```
+Pixabay content is free to use, including in monetized videos. Pixabay asks that you mention it as a source, so add "Stock footage: Pixabay" to your video description.
+*(Pexels keys also work via `PEXELS_API_KEY`, but Pexels has paused issuing new keys.)*
+
+**B. By hand, with no key.** Run a `--preview` first. At the end it lists the exact file names it wants, for example:
+```
+stock clip 'empty train station' -> save one as stock/empty-train-station-0.mp4
+```
+Search that phrase on pexels.com or pixabay.com, download the clip, and save it into the `stock` folder (next to `shots.txt`) with that exact name. The next run uses it automatically.
+
+Downloaded and hand-saved clips are reused on every re-render.
 
 ---
 
@@ -54,7 +63,7 @@ One visual per line: `paragraph: type: value`
 1: screenshot: screenshots/01_roku_headline.png
 1: text: 75+ SHOWS | sold to Roku for well under $100 million
 2: chart: charts/chart1_funding.png
-3-4: pexels: person watching phone on train
+3-4: stock: person watching phone on train
 5: video: clips/my_own_clip.mp4
 ```
 
@@ -62,7 +71,7 @@ One visual per line: `paragraph: type: value`
 |---|---|
 | `screenshot`, `chart`, `image` | Shows a picture with a slow zoom. Pictures that aren't 16:9 sit on the navy background |
 | `text` | A navy text card. `Headline \| smaller line` (the `\|` part is optional) |
-| `pexels` | Downloads a matching free stock clip (needs the API key). Repeat a search and you get a different clip |
+| `stock` | A matching free stock clip, downloaded automatically (Pixabay key) or saved by hand. Repeat a search and you get a different clip |
 | `video`, `clip` | Your own video file. It's trimmed, or looped, to fit |
 
 Rules:

@@ -66,8 +66,8 @@ class ShotListTests(unittest.TestCase):
         self.assertEqual(sum(mv.frame_counts(tl)), 100 * mv.FPS)
 
 
-class PexelsTests(unittest.TestCase):
-    def test_pick_file_prefers_hd_near_1920(self):
+class StockTests(unittest.TestCase):
+    def test_pick_pexels_file_prefers_hd_near_1920(self):
         video = {"video_files": [
             {"file_type": "video/mp4", "width": 640, "link": "sd"},
             {"file_type": "video/mp4", "width": 1920, "link": "hd"},
@@ -75,26 +75,46 @@ class PexelsTests(unittest.TestCase):
         ]}
         self.assertEqual(mv.pick_pexels_file(video), "hd")
 
-    def test_fetch_uses_cache_and_rotates_results(self):
+    def test_pick_pixabay_file_skips_empty_sizes(self):
+        hit = {"videos": {
+            "large": {"url": "", "width": 0},
+            "medium": {"url": "m", "width": 1920},
+            "small": {"url": "s", "width": 1280},
+            "tiny": {"url": "t", "width": 640},
+        }}
+        self.assertEqual(mv.pick_pixabay_file(hit), "m")
+        self.assertIsNone(mv.pick_pixabay_file({"videos": {}}))
+
+    def test_fetch_uses_cache_rotates_and_falls_back(self):
         calls = []
 
-        def fake_search(query, key):
-            return {"videos": [
-                {"video_files": [{"file_type": "video/mp4", "width": 1920, "link": f"clip{i}"}]}
-                for i in range(3)]}
+        def broken(query, key):
+            raise mv.urllib.error.URLError("down")
+
+        def working(query, key):
+            return [f"clip{i}" for i in range(3)]
 
         def fake_download(url, path):
             calls.append(url)
             Path(path).write_bytes(b"x")
 
+        providers = {"pixabay": broken, "pexels": working}
+        keys = {"pixabay": "k1", "pexels": "k2"}
         with tempfile.TemporaryDirectory() as d:
-            a = mv.fetch_pexels("phone on train", 0, d, "key", fake_search, fake_download)
-            b = mv.fetch_pexels("phone on train", 1, d, "key", fake_search, fake_download)
-            again = mv.fetch_pexels("phone on train", 0, d, "key", fake_search, fake_download)
+            a = mv.fetch_stock("phone on train", 0, d, keys, providers, fake_download)
+            b = mv.fetch_stock("phone on train", 1, d, keys, providers, fake_download)
+            again = mv.fetch_stock("phone on train", 0, d, keys, providers, fake_download)
             self.assertNotEqual(a, b)
             self.assertEqual(a, again)
-            self.assertEqual(calls, ["clip0", "clip1"])  # third call came from cache
-            self.assertIsNone(mv.fetch_pexels("new query", 0, d, None, fake_search, fake_download))
+            self.assertEqual(calls, ["clip0", "clip1"])  # third call came from the cache
+            self.assertIsNone(mv.fetch_stock("new query", 0, d, {}, providers, fake_download))
+
+    def test_manually_saved_clip_needs_no_key(self):
+        with tempfile.TemporaryDirectory() as d:
+            manual = mv.stock_path("Empty train station!", 0, d)
+            self.assertEqual(manual.name, "empty-train-station-0.mp4")
+            manual.write_bytes(b"x")
+            self.assertEqual(mv.fetch_stock("Empty train station!", 0, d, {}), manual)
 
 
 @unittest.skipUnless(HAVE_FFMPEG and HAVE_PIL, "needs ffmpeg and Pillow")
@@ -108,7 +128,7 @@ class RenderTests(unittest.TestCase):
             (d / "voice.timings.json").write_text(json.dumps(TIMINGS))
             Image.new("RGB", (800, 600), "white").save(d / "shot.png")
             (d / "shots.txt").write_text("1: screenshot: shot.png\n2: text: $1.75B | raised\n"
-                                         "3: pexels: office\n4: image: missing.png\n")
+                                         "3: stock: office\n4: image: missing.png\n")
             out = d / "out.mp4"
             fake_fetch = lambda *a: None  # noqa: E731  (no network in tests)
             tl, warnings = mv.make_video(d / "voice.wav", d / "shots.txt", out, size=(480, 270),

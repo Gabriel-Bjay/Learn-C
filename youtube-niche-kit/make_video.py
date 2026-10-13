@@ -7,13 +7,14 @@ Auto-edit a Work Rewired video: voiceover + shot list -> finished 1080p MP4.
   python make_video.py quibi_voiceover.wav shots.txt --music bg.mp3
 
 Needs: ffmpeg on PATH, Pillow (pip install pillow), and the .timings.json that
-voiceover.py writes next to the .wav. Stock footage ("pexels:" lines) needs a free
-Pexels API key in the PEXELS_API_KEY environment variable.
+voiceover.py writes next to the .wav. Stock footage ("stock:" lines) is downloaded
+automatically with a free PIXABAY_API_KEY (or PEXELS_API_KEY), or you can save
+clips by hand into the stock/ folder — the run tells you the exact file names.
 
 Shot list format (one visual per line; see SHOTS.md):
   1: image: screenshots/roku_headline.png
   2: text: $1.75 BILLION | raised before a single customer paid
-  3-4: pexels: person watching phone on train
+  3-4: stock: person watching phone on train
   5: video: clips/my_clip.mp4
 Several lines for the same paragraph split its time evenly, in order.
 Paragraphs with no line keep showing the previous visual.
@@ -27,6 +28,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import urllib.error
 import urllib.parse
 import urllib.request
 from pathlib import Path
@@ -40,7 +42,8 @@ MUTED = (185, 200, 230)
 
 IMAGE_TYPES = {"image", "chart", "screenshot", "img"}
 VIDEO_TYPES = {"video", "clip"}
-ALL_TYPES = IMAGE_TYPES | VIDEO_TYPES | {"text", "pexels"}
+STOCK_TYPES = {"stock", "pexels", "pixabay"}
+ALL_TYPES = IMAGE_TYPES | VIDEO_TYPES | STOCK_TYPES | {"text"}
 
 FONT_CANDIDATES = [
     "C:/Windows/Fonts/segoeuib.ttf", "C:/Windows/Fonts/arialbd.ttf",
@@ -65,7 +68,7 @@ def parse_shots(text):
         first, last, kind, value = int(m[1]), int(m[2] or m[1]), m[3].lower(), m[4].strip()
         if kind not in ALL_TYPES:
             raise ValueError(f"shot list line {line_no}: unknown type '{kind}' "
-                             f"(use image, chart, screenshot, video, text or pexels)")
+                             f"(use image, chart, screenshot, video, text or stock)")
         if last < first:
             raise ValueError(f"shot list line {line_no}: range {first}-{last} goes backwards")
         if first == last:
@@ -193,38 +196,73 @@ def render_text_card(value, out_path, size, font_path):
     img.save(out_path)
 
 
-def pexels_search(query, api_key):
-    url = "https://api.pexels.com/videos/search?" + urllib.parse.urlencode(
-        {"query": query, "orientation": "landscape", "per_page": 15})
-    req = urllib.request.Request(url, headers={"Authorization": api_key, "User-Agent": "make_video/1.0"})
+def stock_path(query, occurrence, cache_dir):
+    """Where a stock clip for this query lives, e.g. stock/empty-train-station-0.mp4.
+
+    You can also save a clip here by hand (downloaded from pexels.com, pixabay.com…)
+    and it will be used without any API key.
+    """
+    slug = re.sub(r"[^a-z0-9]+", "-", query.lower()).strip("-")[:40]
+    return Path(cache_dir) / f"{slug}-{occurrence}.mp4"
+
+
+def _best(files, target_w=1920):
+    """Pick the file closest to 1080p width, preferring HD."""
+    files = [f for f in files if f.get("url") and f.get("width")]
+    if not files:
+        return None
+    return min(files, key=lambda f: (f["width"] < 1280, abs(f["width"] - target_w)))["url"]
+
+
+def _get_json(url, headers=None):
+    req = urllib.request.Request(url, headers={"User-Agent": "make_video/1.0", **(headers or {})})
     with urllib.request.urlopen(req, timeout=30) as resp:
         return json.load(resp)
 
 
-def pick_pexels_file(video, target_w=1920):
-    files = [f for f in video.get("video_files", []) if f.get("file_type") == "video/mp4" and f.get("width")]
-    if not files:
-        return None
-    return min(files, key=lambda f: (f["width"] < 1280, abs(f["width"] - target_w)))["link"]
+def pick_pexels_file(video):
+    return _best([{"url": f.get("link"), "width": f.get("width")}
+                  for f in video.get("video_files", []) if f.get("file_type") == "video/mp4"])
 
 
-def fetch_pexels(query, occurrence, cache_dir, api_key, search=pexels_search, download=None):
-    """Download (or reuse) a stock clip. Repeated queries get different clips."""
-    slug = re.sub(r"[^a-z0-9]+", "-", query.lower()).strip("-")[:40]
-    path = Path(cache_dir) / f"{slug}-{occurrence}.mp4"
+def pexels_links(query, api_key):
+    data = _get_json("https://api.pexels.com/videos/search?" + urllib.parse.urlencode(
+        {"query": query, "orientation": "landscape", "per_page": 15}), {"Authorization": api_key})
+    return [pick_pexels_file(v) for v in data.get("videos", [])]
+
+
+def pick_pixabay_file(hit):
+    return _best([v for v in (hit.get("videos") or {}).values() if isinstance(v, dict)])
+
+
+def pixabay_links(query, api_key):
+    data = _get_json("https://pixabay.com/api/videos/?" + urllib.parse.urlencode(
+        {"key": api_key, "q": query[:100], "per_page": 20, "safesearch": "true"}))
+    return [pick_pixabay_file(h) for h in data.get("hits", [])]
+
+
+STOCK_PROVIDERS = {"pixabay": pixabay_links, "pexels": pexels_links}
+
+
+def fetch_stock(query, occurrence, cache_dir, keys, providers=None, download=None):
+    """Return a local clip for `query`: a file you saved by hand, or one downloaded
+    from the first provider with a key. Repeated queries get different clips."""
+    path = stock_path(query, occurrence, cache_dir)
     if path.exists():
         return path
-    if not api_key:
-        return None
-    videos = search(query, api_key).get("videos", [])
-    if not videos:
-        return None
-    link = pick_pexels_file(videos[occurrence % len(videos)])
-    if not link:
-        return None
-    path.parent.mkdir(parents=True, exist_ok=True)
-    (download or _download)(link, path)
-    return path
+    for name, find_links in (providers or STOCK_PROVIDERS).items():
+        if not keys.get(name):
+            continue
+        try:
+            links = [link for link in find_links(query, keys[name]) if link]
+        except (urllib.error.URLError, ValueError, OSError) as err:
+            print(f"  {name} search failed for '{query}': {err}", file=sys.stderr)
+            continue
+        if links:
+            path.parent.mkdir(parents=True, exist_ok=True)
+            (download or _download)(links[occurrence % len(links)], path)
+            return path
+    return None
 
 
 def _download(url, path):
@@ -273,8 +311,8 @@ def resolve(kind, value, base_dir):
 
 
 def make_video(audio, shots_path, out, size=(1920, 1080), preset="veryfast", music=None,
-               music_volume=0.12, zoom=True, font=None, pexels_key=None, stock_dir="stock",
-               fetch=fetch_pexels):
+               music_volume=0.12, zoom=True, font=None, stock_keys=None, stock_dir="stock",
+               fetch=fetch_stock):
     audio = Path(audio)
     timings_path = audio.with_suffix(".timings.json")
     if not timings_path.exists():
@@ -293,7 +331,8 @@ def make_video(audio, shots_path, out, size=(1920, 1080), preset="veryfast", mus
     timeline = build_timeline(timings, shots)
     frames = frame_counts(timeline)
     font_path = find_font(font)
-    warnings, pexels_seen = [], {}
+    warnings, stock_seen = [], {}
+    stock_keys = stock_keys or {}
 
     with tempfile.TemporaryDirectory() as tmp:
         tmp = Path(tmp)
@@ -301,15 +340,15 @@ def make_video(audio, shots_path, out, size=(1920, 1080), preset="veryfast", mus
         for i, ((start, end, kind, value), n_frames) in enumerate(zip(timeline, frames)):
             print(f"  segment {i + 1}/{len(timeline)} ({kind}, {end - start:.1f}s)", file=sys.stderr)
             seg = tmp / f"seg{i:04d}.mp4"
-            if kind == "pexels":
-                occurrence = pexels_seen.get(value, 0)
-                pexels_seen[value] = occurrence + 1
-                clip = fetch(value, occurrence, base / stock_dir, pexels_key)
+            if kind in STOCK_TYPES:
+                occurrence = stock_seen.get(value, 0)
+                stock_seen[value] = occurrence + 1
+                clip = fetch(value, occurrence, base / stock_dir, stock_keys)
                 if clip:
                     kind, value = "video", str(clip)
                 else:
-                    warnings.append(f"no stock clip for '{value}' "
-                                    f"({'set PEXELS_API_KEY' if not pexels_key else 'no results'})")
+                    wanted = stock_path(value, occurrence, Path(stock_dir)).as_posix()
+                    warnings.append(f"stock clip '{value}' -> save one as {wanted}")
                     kind, value = "text", f"STOCK: {value}"
             if kind in IMAGE_TYPES | VIDEO_TYPES:
                 path = resolve(kind, value, base)
@@ -373,13 +412,14 @@ def main(argv=None):
     print(f"Building {out} ...", file=sys.stderr)
     timeline, warnings = make_video(audio, args.shots, out, size=size, preset=preset, music=args.music,
                                     music_volume=args.music_volume, zoom=not args.no_zoom, font=args.font,
-                                    pexels_key=os.environ.get("PEXELS_API_KEY"))
+                                    stock_keys={"pixabay": os.environ.get("PIXABAY_API_KEY"),
+                                                "pexels": os.environ.get("PEXELS_API_KEY")})
     print(f"Done: {out} ({len(timeline)} shots)")
     if warnings:
         print("\nPlaceholders were used for:")
         for w in dict.fromkeys(warnings):
             print(f"  - {w}")
-        print("Add those files (or a Pexels key) and run again for the final version.")
+        print("Add those files (or set PIXABAY_API_KEY for automatic stock clips) and run again.")
 
 
 if __name__ == "__main__":

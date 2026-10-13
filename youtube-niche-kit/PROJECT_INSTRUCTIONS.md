@@ -77,7 +77,7 @@ I. Verify before recording: numbers and quotes I must check by hand.
     screenshot: screenshots/NN_short_name.png   (a source headline/paragraph I will capture)
     chart: charts/chartN_short_name.png         (one of the charts from part D)
     text: HEADLINE | smaller line                (on-screen text card; keep headline under 8 words)
-    pexels: 3-6 word stock footage search        (generic real-world footage, no brands or famous people)
+    stock: 3-6 word stock footage search         (generic real-world footage, no brands or famous people)
   Use 1–3 lines per paragraph, never leave paragraph 1 empty, and vary visuals so no single visual stays on screen longer than about 20 seconds. After the code block, list every screenshot file name with the exact source URL and what to capture.
 
 # Hard rules
