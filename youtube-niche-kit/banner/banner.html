@@ -1,0 +1,87 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Work Rewired banner</title>
+<style>
+  :root {
+    --navy-1: #061733;
+    --navy-2: #0c2c63;
+    --cyan: #2fd3f0;
+    --white: #ffffff;
+    --muted: #b9c8e6;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 2560px; height: 1440px; background: var(--navy-1); overflow: hidden; }
+  .canvas {
+    position: relative; width: 2560px; height: 1440px;
+    background:
+      radial-gradient(1200px 520px at 50% 50%, rgba(47, 211, 240, 0.10), transparent 70%),
+      linear-gradient(135deg, var(--navy-1) 0%, var(--navy-2) 55%, var(--navy-1) 100%);
+    font-family: "Inter Display", "Inter", sans-serif;
+  }
+  svg.circuits { position: absolute; inset: 0; }
+  /* YouTube's "safe area" visible on every device: 1546 x 423, centred */
+  .safe {
+    position: absolute; left: 507px; top: 508px; width: 1546px; height: 423px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center;
+  }
+  .title {
+    font-weight: 900; font-size: 176px; line-height: 1; letter-spacing: 4px;
+    color: var(--white);
+  }
+  .title span { color: var(--cyan); }
+  .rule { width: 180px; height: 8px; border-radius: 4px; background: var(--cyan); margin: 34px 0 30px; }
+  .tagline { font-weight: 600; font-size: 60px; color: var(--white); letter-spacing: 1px; }
+  .sub { font-weight: 500; font-size: 40px; color: var(--muted); margin-top: 18px; letter-spacing: 1px; }
+  body.guides .safe { outline: 4px dashed #ff3b6b; }
+  body.guides .desktop { position: absolute; left: 0; top: 508px; width: 2560px; height: 423px; outline: 4px dashed #ffd23b; }
+</style>
+</head>
+<body>
+<div class="canvas">
+  <svg class="circuits" viewBox="0 0 2560 1440" xmlns="http://www.w3.org/2000/svg" fill="none"
+       stroke="#2fd3f0" stroke-linecap="round" stroke-linejoin="round">
+    <!-- left traces -->
+    <g stroke-width="5" opacity="0.35">
+      <path d="M0 560 H220 L280 620 H430"/>
+      <path d="M0 720 H160 L230 650 H360"/>
+      <path d="M0 860 H260 L320 800 H450"/>
+      <path d="M90 300 V470 L150 530 H300"/>
+      <path d="M140 1180 V990 L210 920 H330"/>
+    </g>
+    <g fill="#2fd3f0" stroke="none" opacity="0.6">
+      <circle cx="430" cy="620" r="12"/><circle cx="360" cy="650" r="10"/>
+      <circle cx="450" cy="800" r="12"/><circle cx="300" cy="530" r="10"/>
+      <circle cx="330" cy="920" r="10"/>
+    </g>
+    <!-- right traces (mirrored) -->
+    <g stroke-width="5" opacity="0.35">
+      <path d="M2560 560 H2340 L2280 620 H2130"/>
+      <path d="M2560 720 H2400 L2330 650 H2200"/>
+      <path d="M2560 860 H2300 L2240 800 H2110"/>
+      <path d="M2470 300 V470 L2410 530 H2260"/>
+      <path d="M2420 1180 V990 L2350 920 H2230"/>
+    </g>
+    <g fill="#2fd3f0" stroke="none" opacity="0.6">
+      <circle cx="2130" cy="620" r="12"/><circle cx="2200" cy="650" r="10"/>
+      <circle cx="2110" cy="800" r="12"/><circle cx="2260" cy="530" r="10"/>
+      <circle cx="2230" cy="920" r="10"/>
+    </g>
+    <!-- faint grid dots for depth (TV-only area) -->
+    <g fill="#2fd3f0" stroke="none" opacity="0.10">
+      <circle cx="640" cy="200" r="5"/><circle cx="1280" cy="160" r="5"/><circle cx="1920" cy="220" r="5"/>
+      <circle cx="800" cy="1260" r="5"/><circle cx="1500" cy="1300" r="5"/><circle cx="2000" cy="1220" r="5"/>
+    </g>
+  </svg>
+  <div class="desktop"></div>
+  <div class="safe">
+    <div class="title">WORK <span>REWIRED</span></div>
+    <div class="rule"></div>
+    <div class="tagline">The future of work, decoded.</div>
+    <div class="sub">The money &amp; tech behind how we work</div>
+  </div>
+</div>
+</body>
+</html>
