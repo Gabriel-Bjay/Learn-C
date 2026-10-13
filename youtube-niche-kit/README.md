@@ -8,6 +8,8 @@ Everything for launching **Work Rewired** ("The future of work decoded"), a face
 | `PROJECT_INSTRUCTIONS.md` | Paste into a Claude Project. It turns Claude into your researcher and scriptwriter |
 | `VIDEO_IDEAS.md` | 20 starter ideas, each backed by a format that's breaking out right now |
 | `voiceover.py` + `VOICEOVER.md` | Free AI voiceover and captions from your script, so there's no recording |
+| `make_video.py` + `SHOTS.md` | Auto-editor: voiceover + shot list → finished 1080p video |
+| `videos/01-quibi/` | First video: voice-ready script and shot list |
 | `niche_scanner.py` | Free tool that compares niches using YouTube's own data |
 | `niches.txt` | Example niche list for the scanner |
 

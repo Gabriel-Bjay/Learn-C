@@ -69,7 +69,7 @@ More voices are listed in `VOICES.md` at huggingface.co/hexgrad/Kokoro-82M.
    ```bash
    python voiceover.py quibi.txt --voice am_michael
    ```
-3. You get `quibi.wav` and `quibi.srt`. Put the `.wav` on your editor's timeline and build the visuals on top.
+3. You get `quibi.wav`, `quibi.srt` and `quibi.timings.json`. Next, make the video automatically with `make_video.py` (see SHOTS.md), or put the `.wav` into an editor by hand.
 
 Options:
 - `--speed 0.95` slows it down a little. Calmer often sounds more human.

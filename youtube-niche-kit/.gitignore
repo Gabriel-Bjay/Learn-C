@@ -6,3 +6,5 @@ voice_samples/
 *.wav
 *.srt
 banner/preview-with-safe-areas.png
+stock/
+*.mp4

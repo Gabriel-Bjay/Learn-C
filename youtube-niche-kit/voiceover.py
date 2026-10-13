@@ -13,6 +13,7 @@ See VOICEOVER.md for step-by-step instructions.
 """
 
 import argparse
+import json
 import re
 import sys
 from pathlib import Path
@@ -111,6 +112,19 @@ def write_srt(cues, path):
             fh.write(f"{i}\n{fmt_time(start)} --> {fmt_time(max(end, start + 0.3))}\n{text}\n\n")
 
 
+def write_timings(paragraphs, timings, total_seconds, path):
+    """Paragraph start/end times, used by make_video.py to line visuals up with speech."""
+    data = {
+        "duration": round(total_seconds, 3),
+        "paragraphs": [
+            {"n": i, "start": start, "end": end, "text": text[:80]}
+            for i, (text, (start, end)) in enumerate(zip(paragraphs, timings), 1)
+        ],
+    }
+    with open(path, "w", encoding="utf-8") as fh:
+        json.dump(data, fh, indent=1)
+
+
 # ---------------------------------------------------------------- synthesis
 
 def load_pipeline(voice):
@@ -125,8 +139,11 @@ def load_pipeline(voice):
     return KPipeline(lang_code=lang, repo_id=REPO_ID)
 
 
-def synthesize(paragraphs, pipeline, voice, speed, pause, chunk_gap=0.12):
-    """Return (audio as float32 numpy array, list of caption cues)."""
+def synthesize(paragraphs, pipeline, voice, speed, pause, chunk_gap=0.12, timings=None):
+    """Return (audio as float32 numpy array, list of caption cues).
+
+    If `timings` is a list, (start, end) seconds for each paragraph are appended to it.
+    """
     import numpy as np
 
     pieces, cues, cursor = [], [], 0.0
@@ -136,6 +153,7 @@ def synthesize(paragraphs, pipeline, voice, speed, pause, chunk_gap=0.12):
     for p_index, paragraph in enumerate(paragraphs):
         print(f"  paragraph {p_index + 1}/{len(paragraphs)}", file=sys.stderr)
         first = True
+        para_start = cursor
         for result in pipeline(paragraph, voice=voice, speed=speed, split_pattern=None):
             if result.audio is None:
                 continue
@@ -148,6 +166,8 @@ def synthesize(paragraphs, pipeline, voice, speed, pause, chunk_gap=0.12):
             pieces.append(audio)
             cursor += length
             first = False
+        if timings is not None:
+            timings.append((round(para_start, 3), round(cursor, 3)))
         if p_index < len(paragraphs) - 1:
             pieces.append(para_silence)
             cursor += pause
@@ -180,7 +200,9 @@ def main(argv=None):
         out_dir.mkdir(exist_ok=True)
         pipelines = {}
         for voice in SUGGESTED_VOICES:
-            pipe = pipelines.setdefault(voice[0], load_pipeline(voice))
+            if voice[0] not in pipelines:
+                pipelines[voice[0]] = load_pipeline(voice)
+            pipe = pipelines[voice[0]]
             audio, _ = synthesize([SAMPLE_TEXT], pipe, voice, args.speed, args.pause)
             sf.write(out_dir / f"{voice}.wav", audio, SAMPLE_RATE)
             print(f"Saved {out_dir / (voice + '.wav')}")
@@ -196,12 +218,15 @@ def main(argv=None):
     out = Path(args.out) if args.out else script_path.with_suffix("")
     print(f"Generating voiceover with '{args.voice}' ...", file=sys.stderr)
     pipeline = load_pipeline(args.voice)
-    audio, cues = synthesize(paragraphs, pipeline, args.voice, args.speed, args.pause)
+    timings = []
+    audio, cues = synthesize(paragraphs, pipeline, args.voice, args.speed, args.pause, timings=timings)
 
     sf.write(f"{out}.wav", audio, SAMPLE_RATE)
     write_srt(cues, f"{out}.srt")
+    write_timings(paragraphs, timings, len(audio) / SAMPLE_RATE, f"{out}.timings.json")
     minutes = len(audio) / SAMPLE_RATE / 60
-    print(f"Done: {out}.wav ({minutes:.1f} min) and {out}.srt (captions)")
+    print(f"Done: {out}.wav ({minutes:.1f} min), {out}.srt (captions), "
+          f"{out}.timings.json (for make_video.py)")
 
 
 if __name__ == "__main__":

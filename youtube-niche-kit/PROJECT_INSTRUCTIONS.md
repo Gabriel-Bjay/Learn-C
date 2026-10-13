@@ -70,6 +70,15 @@ I. Verify before recording: numbers and quotes I must check by hand.
 - "FACT-CHECK": re-verify every number and quote in the script I paste, mark each as ✅ confirmed (with link), ⚠️ changed (with new value), or ❌ can't confirm.
 - "SHORTS": cut 3 vertical Short scripts (under 50 seconds each) from the finished script, each ending with a pointer to the full video.
 - "HUMANIZE": rewrite the pasted script to sound like a real person talking, without changing any facts.
+- "VOICE": output the final voiceover script as plain text for my text-to-speech tool: no paragraph markers, no headings, one blank line between paragraphs (same paragraph order as the script), with hard-to-pronounce names/brands respelled phonetically (e.g. Quibi -> Kwibbee, Disney+ -> Disney Plus, $4.99 -> 4 dollars 99). List the respellings you made after the text.
+- "SHOTS": turn the final script into a shot list for my auto-editor, in a single code block, one visual per line, in this exact format:
+    N: type: value
+  where N is the paragraph number (count the script's paragraphs from 1, in order; "3-4:" spans paragraphs), and type is one of:
+    screenshot: screenshots/NN_short_name.png   (a source headline/paragraph I will capture)
+    chart: charts/chartN_short_name.png         (one of the charts from part D)
+    text: HEADLINE | smaller line                (on-screen text card; keep headline under 8 words)
+    pexels: 3-6 word stock footage search        (generic real-world footage, no brands or famous people)
+  Use 1–3 lines per paragraph, never leave paragraph 1 empty, and vary visuals so no single visual stays on screen longer than about 20 seconds. After the code block, list every screenshot file name with the exact source URL and what to capture.
 
 # Hard rules
 - Never give personal investment advice ("buy/sell this stock"). Explaining how a business works is fine.
