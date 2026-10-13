@@ -1,0 +1,101 @@
+In January 2021, Roku bought the rights to more than 75 shows. Liam Hemsworth. Kevin Hart. Anna Kendrick. Laurence Fishburne. According to The Wall Street Journal, Roku paid well under $100 million for all of it.
+
+Those shows came from a company that had raised $1.75 billion. A company that planned to spend about $1 billion on content in its first year alone. A company that announced it was shutting down six and a half months after launch.
+
+That company was Kwibbee. Here's the question: how do you raise $1.75 billion, sign some of the biggest names in Hollywood, and end up selling the shows for a fraction of what they cost?
+
+Short answer: Kwibbee didn't make one fatal mistake. It built a business where even the success case lost about $1 billion in year one, and where the thing it paid for didn't really belong to it. Let's walk through the numbers.
+
+Kwibbee was short for "quick bites." It was founded by Jeffrey Katzenberg, the former head of Walt Disney Studios and a co-founder of DreamWorks. Its CEO was Meg Whitman, who had run eBay and HP. Hollywood plus Silicon Valley.
+
+The idea was premium shows, cut into chapters of 10 minutes or less, built only for your phone. Big stars. Big budgets. You'd watch in the gaps of your day: on the train, in a queue, between meetings.
+
+Investors loved it. Kwibbee raised $1 billion in 2018, back when it was still called New TV. The first backers included the major Hollywood studios, plus Goldman Sachs and Alibaba. Then in March 2020, one month before launch, it closed another $750 million. That's $1.75 billion raised before a single customer paid a cent.
+
+Advertisers signed up too. In January 2020, Kwibbee said it had sold out its first-year ad inventory. That was about $150 million, from brands like Walmart, Google and PepsiCo.
+
+It launched on April 6, 2020. On October 21, the founders announced they were shutting it down. On December 1, the app went dark.
+
+So this isn't a story about a scrappy startup that ran out of runway. Kwibbee had the money, the talent and the advertisers. And here's the strangest part: when it quit, it still had hundreds of millions of dollars in the bank. We'll come back to that.
+
+Let's start with how the money was supposed to flow.
+
+On the revenue side, there were two plans: 4 dollars 99 a month with ads, or 7 dollars 99 a month without. On top of that, Kwibbee sold the ads that ran inside the cheaper plan.
+
+On the cost side, two lines mattered most: shows and marketing.
+
+The shows were expensive on purpose. Kwibbee said it would pay up to $100,000 per minute for its top originals. That's $6 million an hour, which is prime-time TV money. Katzenberg himself said a high-end YouTube video typically costs no more than about $2,000 a minute. So Kwibbee's best shows cost up to 50 times more per minute than the best free videos on the same phone.
+
+In June 2019, the founders laid out year one. About $1 billion on content. About $470 million on marketing. The goal, as reported in May 2020, was 7 million users and $250 million in subscription revenue in the first year.
+
+Let's put those together. Here's a rough estimate of year one if everything had gone to plan.
+
+Money in: $250 million from subscribers, plus about $150 million from advertisers. Call it $400 million.
+
+Money out: $1 billion for shows, plus $470 million for marketing. About $1.47 billion. The gap is roughly $1 billion. That's before salaries, engineers, offices or the app itself.
+
+So in the good scenario, Kwibbee was planning to lose about $1 billion in its first year.
+
+To be fair, that isn't automatically crazy. Streaming is a business where you pay first and earn later. You spend heavily on a library and hope subscribers keep paying for it for years. So the real question isn't how much Kwibbee spent. It's what Kwibbee got for the money.
+
+If you're enjoying this, a like or a subscribe genuinely helps a small channel like this one. Now, back to Kwibbee.
+
+Here's the part most people miss. Kwibbee didn't buy its shows. It rented them.
+
+Under its deals, Kwibbee paid a show's production costs plus 20% on top. In return, it got exclusive rights to the short, chapter-by-chapter version for seven years. But after just two years, the creators could stitch those chapters back into a film or a regular series and sell it anywhere in the world. After seven years, everything went back to them.
+
+Katzenberg pitched this as a creator-friendly deal, and it was. Creators got paid as if Kwibbee was buying. Kwibbee kept the rights as if it was renting.
+
+Why does that matter? In streaming, the library is the asset. A show you own can be resold, licensed abroad and rewatched for decades. A show you rent loses value every month the clock runs. It's the difference between a mortgage and rent. Both put a roof over your head. Only one leaves you with a house.
+
+That became painfully clear when Kwibbee tried to sell itself. Katzenberg reportedly approached Apple, WarnerMedia and Facebook. Nobody bit. The Information reported that NBC Universal was put off because Kwibbee didn't own many of the shows on its own app.
+
+In the end, Roku bought the library rights, reportedly for well under $100 million. Here's a rough estimate of what that means. Kwibbee planned about $1 billion of content spending. Even if Roku paid the full $100 million, that's less than 10 cents back for every dollar. The real figure is probably lower.
+
+Then there was the second problem. Not enough people walked through the door.
+
+The launch looked decent. Whitman said the app hit 1.7 million downloads in its first week. By May, Kwibbee said it had 3.5 million downloads and 1.3 million active users. Katzenberg admitted that was nowhere near the plan.
+
+Everyone who joined at launch got a 90-day free trial. In July, the analytics firm Sensor Tower estimated that of roughly 910,000 people who signed up in the first three days, only about 72,000 stayed and paid when the trial ended. That's about 8%.
+
+Kwibbee pushed back hard. A spokesperson said the paid subscriber figure was "incorrect by an order of magnitude." But Kwibbee never published its own number. Later reports put it at around 500,000 paying subscribers. Treat both figures as estimates.
+
+And here's the twist inside the twist. 8% isn't actually terrible. Sensor Tower said Disney Plus converted about 11% of its first-three-day sign-ups in the US and Canada. The real difference was the size of the funnel. Disney Plus had about 9.5 million of those early sign-ups. Kwibbee had about 910,000. That's more than 10 times fewer people at the top.
+
+So Kwibbee's biggest problem wasn't keeping people. It was getting them to try it at all.
+
+Now the subscriber math. Here's a rough estimate. Say Kwibbee had 500,000 paying subscribers. At 4 dollars 99 a month, that's about $30 million a year. If every one of them paid 7 dollars 99, it's about $48 million. Against a planned $1 billion content bill.
+
+Or look at it per person. Investors put in $1.75 billion and got roughly $300 million to $350 million back. That's a loss of about $1.4 billion. Spread across 500,000 paying subscribers, that's around $2,800 each. That's like every subscriber prepaying the ad-free plan for 29 years.
+
+Even the marketing story is messy. Before launch, media executives told Digiday that Kwibbee planned to spend $400 million to $500 million on marketing in 2020. But the adtracking firm MediaRadar counted about $63 million of TV, digital and print advertising that year. Those figures don't measure the same thing, so we can't settle the gap. What we do know is that its Super Bowl ad ranked fourth from the bottom out of 62 in USA Today's Ad Meter.
+
+Now the strongest defence of Kwibbee. And it's a real one.
+
+The pandemic hit at the worst possible moment. Kwibbee was built for in-between moments: commutes, coffee lines, waiting rooms. In April 2020, those moments disappeared. In May, Katzenberg told The New York Times: "I attribute everything that has gone wrong to coronavirus. Everything." He also said that if they'd known on March 1 what they knew later, launching would not have looked like a good idea.
+
+But the counter-argument is hard to ignore. The pandemic was great for streaming. Netflix added about 15.8 million subscribers in the first three months of 2020. People had more screen time, not less. They just spent it on TVs, and on free apps like YouTube and TikTok. Kwibbee launched phone-only, and it only added a way for iPhone users to watch on a TV in May.
+
+And some things genuinely worked. The shows were good. Kwibbee earned 10 Emmy nominations in its first year and won two, for Laurence Fishburne and Jasmine Cephas Jones in Free Rayshawn. When Roku bought the library, its head of programming, Rob Holmes, said: "We do think this deal represents a great value." The shows found a second life on a free, ad-supported channel.
+
+The format worked too. Short, vertical video on a phone wasn't a bad bet. It was early. In June 2025, YouTube's CEO said Shorts was averaging 200 billion views a day. One caveat: YouTube changed how it counts Shorts views in March 2025, so part of that jump is accounting. Still, short mobile video won. It just won for free, made by creators, not for $8 a month, made by studios.
+
+One more thing deserves credit. Kwibbee stopped. Katzenberg and Whitman chose to wind down while there was still cash left, and hand it back. Bloomberg reported about $300 million. Other reports said $350 million. The sources differ, but either way, that's hundreds of millions that didn't get burned on a slow death. In startups, that kind of discipline is rare.
+
+So did Kwibbee fail because of timing, or because of the idea?
+
+In their farewell letter, the founders offered both. Maybe, they wrote, "the idea itself wasn't strong enough to justify a standalone streaming service." Or maybe it was the timing.
+
+Our answer: it was the idea. The pandemic just made it obvious faster. Look at the three numbers. A best-case plan that still lost about $1 billion in year one. A launch funnel more than 10 times smaller than Disney Plus. And a library that, because Kwibbee rented it, sold for a fraction of what it cost.
+
+Kwibbee asked people to pay for something they already got for free, at prices built for TV, for shows it didn't fully own. No launch date fixes that.
+
+Here's the lesson you can reuse.
+
+When a company spends big, don't just ask how much. Ask what the money buys, and whether the company gets to keep it.
+
+Spending that builds something you own, like a library, a network or a loyal audience, can be recovered if things go wrong. Spending that rents something, like borrowed rights or paid attention, disappears the moment you stop paying.
+
+If you're an investor, ask what's left if it fails. If you're a founder, test demand cheaply before you spend like it's proven. Kwibbee spent like a studio before it knew whether anyone wanted a studio on their phone.
+
+If you liked this, watch how Netflix makes money on a single subscription next. It's the business Kwibbee was trying to beat, and the math looks very different.
