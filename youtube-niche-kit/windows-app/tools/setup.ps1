@@ -59,6 +59,14 @@ Ok "FFmpeg is installed"
 # 3. Private Python environment for this folder -------------------------------
 Step 3 "Python environment for Work Rewired"
 $Py = Join-Path $Root "venv\Scripts\python.exe"
+if (Test-Path $Py) {
+    # A venv made earlier with another Python version (e.g. 3.14) can't install the voice library.
+    $venvVersion = & $Py --version 2>&1
+    if ("$venvVersion" -notmatch "3\.12") {
+        Write-Host "      The existing venv uses $venvVersion - rebuilding it with Python 3.12..."
+        Remove-Item -Recurse -Force (Join-Path $Root "venv")
+    }
+}
 if (-not (Test-Path $Py)) {
     & py -3.12 -m venv (Join-Path $Root "venv")
     if ($LASTEXITCODE -ne 0) { Fail "Couldn't create the Python environment." }
