@@ -58,14 +58,38 @@ $dir = $videos[[int]$pick - 1].FullName
 $script = Join-Path $dir "script.txt"
 $shots = Join-Path $dir "shots.txt"
 $wav = Join-Path $dir "script.wav"
-if (-not (Test-Path $script)) { Fail "There's no script.txt in $dir" }
-if (-not (Test-Path $shots)) { Fail "There's no shots.txt in $dir" }
+$thumbSpec = Join-Path $dir "thumbnail.txt"
 
-# 2. Preview or final? ------------------------------------------------------------
+function Make-Thumbnails {
+    if (-not (Test-Path $thumbSpec)) {
+        Write-Host "No thumbnail.txt in this folder - skipping thumbnails (in your Claude Project, type: THUMB)." -ForegroundColor Yellow
+        return $false
+    }
+    Write-Host ""
+    Write-Host "Making thumbnails..." -ForegroundColor Cyan
+    & $Py (Join-Path $Root "tools\thumbnail.py") $thumbSpec | Out-Host  # show output; keep it out of the return value
+    if ($LASTEXITCODE -ne 0) { Fail "The thumbnail step failed (see the message above)." }
+    return $true
+}
+
+# 2. Preview, final or thumbnails? ------------------------------------------------
 Write-Host ""
 Write-Host "  1. Quick preview  (small, fast - to check timing and see what's missing)"
 Write-Host "  2. Final video    (full 1080p for YouTube - takes 10-20 minutes)"
-$isFinal = (Read-Host "Type 1 or 2 and press Enter") -eq "2"
+Write-Host "  3. Thumbnails only (a few seconds)"
+$choice = Read-Host "Type 1, 2 or 3 and press Enter"
+if ($choice -eq "3") {
+    if (Make-Thumbnails) {
+        Write-Host ""
+        Write-Host "=== DONE ===" -ForegroundColor Green
+        $first = Join-Path $dir "thumbnail-1.jpg"
+        if (Test-Path $first) { Start-Process $first }
+    }
+    exit 0
+}
+$isFinal = $choice -eq "2"
+if (-not (Test-Path $script)) { Fail "There's no script.txt in $dir" }
+if (-not (Test-Path $shots)) { Fail "There's no shots.txt in $dir" }
 
 # 3. Voiceover (only if the script is new or changed) ----------------------------
 $needVoice = (-not (Test-Path $wav)) -or ((Get-Item $script).LastWriteTime -gt (Get-Item $wav).LastWriteTime)
@@ -88,10 +112,12 @@ $music = Get-ChildItem $dir -Filter *.mp3 -ErrorAction SilentlyContinue | Select
 if ($music) { $mvArgs += @("--music", $music.FullName); Write-Host "Using music: $($music.Name)" }
 & $Py (Join-Path $Root "tools\make_video.py") @mvArgs
 if ($LASTEXITCODE -ne 0) { Fail "The video build failed (see the message above)." }
+$null = Make-Thumbnails
 
 $out = Join-Path $dir ($(if ($isFinal) { "script.mp4" } else { "script_preview.mp4" }))
 Write-Host ""
 Write-Host "=== DONE ===" -ForegroundColor Green
 Write-Host "Video: $out"
 if ($isFinal) { Write-Host "Captions for YouTube: $(Join-Path $dir 'script.srt')" }
+if (Test-Path (Join-Path $dir "thumbnail-1.jpg")) { Write-Host "Thumbnails: $dir\thumbnail-1.jpg (and -2, -3 for YouTube's Test & Compare)" }
 Start-Process $out

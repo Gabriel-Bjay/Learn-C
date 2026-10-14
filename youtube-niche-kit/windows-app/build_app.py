@@ -40,6 +40,7 @@ FILES = [
     ("app", "windows-app/tools/update.ps1", "tools/update.ps1"),
     ("app", "voiceover.py", "tools/voiceover.py"),
     ("app", "make_video.py", "tools/make_video.py"),
+    ("app", "thumbnail.py", "tools/thumbnail.py"),
     ("app", "PROJECT_INSTRUCTIONS.md", "docs/PROJECT_INSTRUCTIONS.md"),
     ("app", "CHANNEL_SETUP.md", "docs/CHANNEL_SETUP.md"),
     ("app", "VIDEO_IDEAS.md", "docs/VIDEO_IDEAS.md"),
@@ -47,6 +48,7 @@ FILES = [
     ("app", "banner/work-rewired-banner.png", "docs/work-rewired-banner.png"),
     ("user", "videos/01-quibi/quibi_voiceover.txt", "videos/01-quibi/script.txt"),
     ("user", "videos/01-quibi/shots.txt", "videos/01-quibi/shots.txt"),
+    ("user", "videos/01-quibi/thumbnail.txt", "videos/01-quibi/thumbnail.txt"),
 ] + [
     ("user", f"videos/01-quibi/charts/{p.name}", f"videos/01-quibi/charts/{p.name}")
     for p in sorted((KIT / "videos/01-quibi/charts").glob("*.png"))
