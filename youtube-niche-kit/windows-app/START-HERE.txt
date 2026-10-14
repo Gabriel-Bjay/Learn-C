@@ -9,8 +9,14 @@ FIRST TIME ONLY
    - When asked, paste your Pixabay key and press Enter (or just press Enter to skip).
    - At the end a folder of voice samples opens. Listen and pick your favourite.
 
-EVERY VIDEO
------------
+STUDIO (the easy way)
+---------------------
+Double-click STUDIO.bat (after the first time: the 'Work Rewired Studio' icon on your desktop).
+Your browser opens Studio: edit the script, shot list and thumbnail, build, watch, and upload
+missing files - all on one page. Keep the black window open while you work.
+
+EVERY VIDEO (without Studio)
+----------------------------
 1. Inside the "videos" folder, make a folder for the video (copy 01-quibi as a template),
    for example:  videos\02-uber
 2. Put these inside it:

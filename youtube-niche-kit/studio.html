@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Work Rewired Studio</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23061733'/%3E%3Ctext x='16' y='22' font-family='Arial' font-weight='700' font-size='14' text-anchor='middle' fill='%232fd3f0'%3EWR%3C/text%3E%3C/svg%3E">
+<style>
+:root {
+  --navy: #061733; --navy-2: #0c2c63; --panel: #0b2147; --panel-2: #10295a; --line: #1d3a70;
+  --cyan: #2fd3f0; --text: #eef3fb; --muted: #9fb3d6; --good: #35d39a; --warn: #ffcc4d; --bad: #ff6b6b;
+  --radius: 12px; --mono: ui-monospace, "Cascadia Mono", Consolas, monospace;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; }
+body { background: var(--navy); color: var(--text); font: 15px/1.5 "Segoe UI", system-ui, -apple-system, sans-serif; }
+button, input, select, textarea { font: inherit; color: inherit; }
+a { color: var(--cyan); }
+header { display: flex; align-items: center; gap: 14px; padding: 12px 20px; border-bottom: 1px solid var(--line);
+  background: linear-gradient(90deg, var(--navy), var(--navy-2)); position: sticky; top: 0; z-index: 5; }
+.brand { font-weight: 800; letter-spacing: .06em; }
+.brand span { color: var(--cyan); }
+.brand small { color: var(--muted); font-weight: 500; letter-spacing: 0; margin-left: 6px; }
+header .spacer { flex: 1; }
+.layout { display: grid; grid-template-columns: 290px 1fr; min-height: calc(100% - 57px); }
+aside { border-right: 1px solid var(--line); padding: 16px; background: #071c3d; }
+main { padding: 22px 26px 60px; max-width: 1100px; width: 100%; }
+h1 { font-size: 24px; margin: 0 0 4px; }
+h2 { font-size: 17px; margin: 0 0 10px; }
+.muted { color: var(--muted); }
+.btn { border: 1px solid var(--line); background: var(--panel-2); padding: 8px 14px; border-radius: 9px; cursor: pointer; }
+.btn:hover { border-color: var(--cyan); }
+.btn.primary { background: var(--cyan); color: var(--navy); border-color: var(--cyan); font-weight: 700; }
+.btn.danger { border-color: #7a2b3a; color: #ffb3b3; }
+.btn:disabled { opacity: .45; cursor: not-allowed; }
+.btn.small { padding: 4px 10px; font-size: 13px; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; margin-bottom: 16px; }
+.videos { list-style: none; padding: 0; margin: 12px 0 0; display: grid; gap: 8px; }
+.videos li button { width: 100%; text-align: left; background: var(--panel); border: 1px solid var(--line);
+  border-radius: 10px; padding: 10px 12px; cursor: pointer; }
+.videos li button.active { border-color: var(--cyan); box-shadow: 0 0 0 1px var(--cyan) inset; }
+.videos .name { font-weight: 650; display: block; margin-bottom: 6px; word-break: break-word; }
+.chips { display: flex; flex-wrap: wrap; gap: 4px; }
+.chip { font-size: 11px; padding: 1px 7px; border-radius: 99px; border: 1px solid var(--line); color: var(--muted); }
+.chip.on { border-color: transparent; background: rgba(53, 211, 154, .16); color: var(--good); }
+.chip.warn { border-color: transparent; background: rgba(255, 204, 77, .15); color: var(--warn); }
+.tabs { display: flex; gap: 6px; margin: 18px 0 14px; flex-wrap: wrap; }
+.tab { border: 1px solid var(--line); background: transparent; padding: 8px 14px; border-radius: 99px; cursor: pointer; color: var(--muted); }
+.tab.active { background: var(--cyan); color: var(--navy); border-color: var(--cyan); font-weight: 700; }
+.tab .dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--warn); margin-left: 6px; vertical-align: middle; }
+textarea { width: 100%; min-height: 420px; resize: vertical; background: #06142e; border: 1px solid var(--line); border-radius: 10px;
+  padding: 12px 14px; line-height: 1.55; }
+textarea.code { font-family: var(--mono); font-size: 13.5px; white-space: pre; overflow-wrap: normal; overflow-x: auto; }
+textarea:focus, input:focus, select:focus { outline: 2px solid var(--cyan); outline-offset: 1px; }
+.row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.row.end { justify-content: flex-end; }
+.status { font-size: 13px; }
+.status.good { color: var(--good); } .status.bad { color: var(--bad); } .status.warn { color: var(--warn); }
+.hint { font-size: 13px; color: var(--muted); margin: 0 0 10px; }
+.problem { background: rgba(255, 107, 107, .12); border: 1px solid rgba(255, 107, 107, .4); color: #ffd0d0;
+  border-radius: 10px; padding: 8px 12px; font-size: 13.5px; margin: 10px 0 0; }
+.buildbar { display: flex; gap: 10px; flex-wrap: wrap; }
+.progress { height: 10px; background: #06142e; border-radius: 99px; overflow: hidden; border: 1px solid var(--line); margin: 10px 0 6px; }
+.progress > div { height: 100%; width: 0; background: linear-gradient(90deg, var(--cyan), #7ff0ff); transition: width .4s; }
+.progress.indet > div { width: 30% !important; animation: slide 1.2s infinite ease-in-out; }
+@keyframes slide { 0% { margin-left: -30%; } 100% { margin-left: 100%; } }
+pre.log { background: #040e22; border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; max-height: 280px;
+  overflow: auto; font: 12.5px/1.45 var(--mono); color: #c7d5f0; margin: 8px 0 0; white-space: pre-wrap; word-break: break-word; }
+video { width: 100%; border-radius: 10px; background: #000; display: block; }
+.thumbs { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+.thumbs figure { margin: 0; }
+.thumbs img { width: 100%; border-radius: 8px; display: block; border: 1px solid var(--line); }
+.thumbs figcaption { font-size: 12.5px; color: var(--muted); margin-top: 4px; display: flex; justify-content: space-between; }
+.missing { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.missing li { display: flex; gap: 10px; align-items: center; justify-content: space-between; background: #06142e;
+  border: 1px solid var(--line); border-radius: 10px; padding: 8px 12px; }
+.missing li.done { opacity: .55; }
+.missing code { color: var(--cyan); font-size: 13px; word-break: break-all; }
+.missing .what { font-size: 13px; color: var(--muted); }
+.drop { border: 2px dashed var(--line); border-radius: 12px; padding: 16px; text-align: center; color: var(--muted); }
+.drop.over { border-color: var(--cyan); color: var(--text); }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+select, input[type=text], input[type=password] { background: #06142e; border: 1px solid var(--line); border-radius: 9px; padding: 8px 10px; }
+.empty { text-align: center; padding: 60px 20px; }
+.toast { position: fixed; right: 18px; bottom: 18px; background: var(--panel-2); border: 1px solid var(--cyan); border-radius: 10px;
+  padding: 10px 14px; max-width: 360px; box-shadow: 0 10px 30px rgba(0,0,0,.4); z-index: 20; }
+.banner { background: rgba(47, 211, 240, .12); border: 1px solid rgba(47, 211, 240, .45); border-radius: 10px; padding: 8px 12px; margin-bottom: 14px; font-size: 14px; }
+dialog { background: var(--panel); color: var(--text); border: 1px solid var(--line); border-radius: 14px; width: min(560px, 94vw); padding: 0; }
+dialog::backdrop { background: rgba(2, 8, 20, .7); }
+dialog .body { padding: 18px 20px; }
+dialog .foot { padding: 12px 20px; border-top: 1px solid var(--line); display: flex; justify-content: flex-end; gap: 8px; }
+.voices { display: grid; gap: 6px; margin: 8px 0 16px; }
+.voices label { display: flex; align-items: center; gap: 10px; background: #06142e; border: 1px solid var(--line); border-radius: 9px; padding: 6px 10px; }
+.voices label span { flex: 1; }
+.kv { display: grid; grid-template-columns: auto 1fr; gap: 4px 14px; font-size: 14px; }
+.mobile-pick { display: none; }
+@media (max-width: 820px) {
+  .layout { grid-template-columns: 1fr; }
+  aside { display: none; }
+  .mobile-pick { display: flex; gap: 8px; margin-bottom: 12px; }
+  .mobile-pick select { flex: 1; }
+  main { padding: 16px; }
+  .grid2 { grid-template-columns: 1fr; }
+  textarea { min-height: 300px; }
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">WORK <span>REWIRED</span><small>Studio</small></div>
+  <div class="spacer"></div>
+  <span id="jobBadge" class="status"></span>
+  <button class="btn small" id="settingsBtn">Settings</button>
+</header>
+<div class="layout">
+  <aside>
+    <div class="row" style="justify-content: space-between">
+      <h2 style="margin:0">Videos</h2>
+      <button class="btn small primary" id="newBtn">+ New video</button>
+    </div>
+    <ul class="videos" id="videoList"></ul>
+  </aside>
+  <main id="main">
+    <div class="mobile-pick"><select id="mobileSelect"></select><button class="btn" id="newBtn2">+ New</button></div>
+    <div id="view"><div class="empty muted">Loading…</div></div>
+  </main>
+</div>
+
+<dialog id="settings">
+  <div class="body">
+    <h2>Settings</h2>
+    <p class="hint">Voice for new voiceovers. Changing it re-makes the voiceover on the next build.</p>
+    <div class="voices" id="voiceList"></div>
+    <label class="hint" for="keyInput">Pixabay key (free stock photos and clips)</label>
+    <div class="row"><input type="password" id="keyInput" placeholder="paste a new key to change it" style="flex:1">
+      <span class="status muted" id="keyNow"></span></div>
+    <div id="updateRow" style="margin-top:18px">
+      <button class="btn small" id="updateBtn">Check for updates now</button>
+      <span class="hint">(updates also install automatically every time Studio starts)</span>
+    </div>
+  </div>
+  <div class="foot"><button class="btn" id="settingsClose">Close</button><button class="btn primary" id="settingsSave">Save</button></div>
+</dialog>
+
+<dialog id="newDialog">
+  <div class="body">
+    <h2>New video</h2>
+    <p class="hint">A short name for the folder, e.g. "Uber one ride".</p>
+    <input type="text" id="newTitle" style="width:100%" maxlength="60">
+  </div>
+  <div class="foot"><button class="btn" id="newCancel">Cancel</button><button class="btn primary" id="newCreate">Create</button></div>
+</dialog>
+
+<script>
+"use strict";
+const $ = (s, el = document) => el.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"}[c]));
+const enc = encodeURIComponent;
+let state = null, current = null, video = null, tab = "script", dirty = {}, logNext = 0, lastJobState = null, poll = null;
+let tabPref = {};
+try { tabPref = JSON.parse(localStorage.getItem("wr-tabs") || "{}"); } catch (e) {}
+
+async function api(path, opts = {}) {
+  const headers = Object.assign({"X-Studio": "1"}, opts.headers || {});
+  const res = await fetch(path, Object.assign({}, opts, {headers}));
+  let data = {};
+  try { data = await res.json(); } catch (e) {}
+  if (!res.ok) throw new Error(data.error || res.statusText);
+  return data;
+}
+function toast(msg, ms = 3500) {
+  const t = document.createElement("div");
+  t.className = "toast"; t.textContent = msg; document.body.appendChild(t);
+  setTimeout(() => t.remove(), ms);
+}
+function chips(v) {
+  const c = (on, label, warn) => `<span class="chip ${on ? "on" : warn ? "warn" : ""}">${label}</span>`;
+  const missing = Array.isArray(v.missing) ? v.missing.filter(m => !m.exists).length : v.missing;
+  return c(v.script, "script") + c(v.shots, "shots") + c(v.voice, "voice") + c(v.preview, "preview") +
+         c(v.final, "final") + c(v.thumbs.length, "thumbs") + (missing ? c(false, missing + " missing", true) : "");
+}
+
+async function loadState() {
+  state = await api("/api/state");
+  const list = $("#videoList");
+  list.innerHTML = state.videos.map(v => `<li><button data-v="${esc(v.name)}" class="${v.name === current ? "active" : ""}">
+      <span class="name">${esc(v.name)}</span><span class="chips">${chips(v)}</span></button></li>`).join("")
+    || `<li class="muted">No videos yet.</li>`;
+  list.querySelectorAll("button[data-v]").forEach(b => b.onclick = () => openVideo(b.dataset.v));
+  $("#mobileSelect").innerHTML = state.videos.map(v => `<option ${v.name === current ? "selected" : ""}>${esc(v.name)}</option>`).join("");
+  if (!current && state.videos.length) {
+    const last = localStorage.getItem("wr-video");
+    openVideo(state.videos.some(v => v.name === last) ? last : state.videos[state.videos.length - 1].name);
+  } else if (!state.videos.length) {
+    $("#view").innerHTML = `<div class="empty"><h1>Welcome to Studio</h1><p class="muted">Start with a new video.</p>
+      <button class="btn primary" onclick="newVideo()">+ New video</button></div>`;
+  }
+  watchJob(state.job);
+}
+
+async function openVideo(name, keepTab) {
+  if (Object.values(dirty).some(Boolean) && name !== current && !confirm("You have unsaved changes. Leave without saving?")) return;
+  current = name; dirty = {};
+  try { localStorage.setItem("wr-video", name); } catch (e) {}
+  if (!keepTab) tab = tabPref[name] || "script";
+  document.querySelectorAll("#videoList button").forEach(b => b.classList.toggle("active", b.dataset.v === name));
+  video = await api(`/api/videos/${enc(name)}`);
+  render();
+}
+
+function render() {
+  const v = video;
+  const tabs = [["script", "1 · Script"], ["shots", "2 · Shot list"], ["thumbnail", "3 · Thumbnail"], ["build", "4 · Build & watch"]];
+  const job = state && state.job;
+  const otherJob = job && job.state === "running" && job.video && job.video !== v.name;
+  $("#view").innerHTML = `
+    ${otherJob ? `<div class="banner">Building <b>${esc(job.video)}</b>… you can keep editing here.</div>` : ""}
+    <h1>${esc(v.name)}</h1>
+    <div class="muted">${v.words} words · about ${v.minutes} min · <span class="chips" style="display:inline-flex">${chips(v)}</span></div>
+    <div class="tabs">${tabs.map(([k, l]) => `<button class="tab ${tab === k ? "active" : ""}" data-t="${k}">${l}${dirty[k] ? '<span class="dot"></span>' : ""}</button>`).join("")}</div>
+    <div id="pane"></div>`;
+  document.querySelectorAll(".tab").forEach(b => b.onclick = () => {
+    tab = b.dataset.t; tabPref[current] = tab;
+    try { localStorage.setItem("wr-tabs", JSON.stringify(tabPref)); } catch (e) {}
+    render();
+  });
+  if (tab === "build") renderBuild(); else renderEditor(tab);
+}
+
+const EDITORS = {
+  script: {hint: "In your Claude Project type <b>VOICE</b> and paste the reply here: plain text, one blank line between paragraphs.", code: false},
+  shots: {hint: "In your Claude Project type <b>SHOTS</b> and paste the code block here. Format: <code>N: type: value</code> — see the Build tab for what's missing after a run.", code: true},
+  thumbnail: {hint: "In your Claude Project type <b>THUMB</b> and paste it here. Each <code>text:</code> line makes one thumbnail.", code: true},
+};
+
+function renderEditor(kind) {
+  const e = EDITORS[kind];
+  const problem = video.problems && video.problems[kind];
+  $("#pane").innerHTML = `
+    <div class="card">
+      <p class="hint">${e.hint}</p>
+      <textarea id="editor" class="${e.code ? "code" : ""}" spellcheck="${!e.code}"></textarea>
+      ${problem ? `<div class="problem">⚠ ${esc(problem)}</div>` : ""}
+      <div class="row end" style="margin-top:10px">
+        <span class="status" id="saveStatus">${dirty[kind] ? '<span class="warn">Unsaved changes</span>' : ""}</span>
+        ${kind === "thumbnail" ? '<button class="btn" id="saveThumbs">Save & make thumbnails</button>' : ""}
+        <button class="btn primary" id="saveBtn">Save <span style="font-weight:400;opacity:.7">(Ctrl+S)</span></button>
+      </div>
+    </div>`;
+  const ed = $("#editor");
+  ed.value = video.texts[kind];
+  ed.oninput = () => {
+    if (!dirty[kind]) { dirty[kind] = true; $("#saveStatus").innerHTML = '<span class="status warn">Unsaved changes</span>';
+      document.querySelector(`.tab[data-t=${kind}]`).insertAdjacentHTML("beforeend", '<span class="dot"></span>'); }
+  };
+  $("#saveBtn").onclick = () => save(kind);
+  if ($("#saveThumbs")) $("#saveThumbs").onclick = async () => { if (await save(kind)) { tab = "build"; render(); run("thumbs"); } };
+}
+
+async function save(kind) {
+  const text = $("#editor").value;
+  try {
+    const r = await api(`/api/videos/${enc(current)}/text/${kind}`, {method: "PUT", body: text, headers: {"Content-Type": "text/plain; charset=utf-8"}});
+    video.texts[kind] = text; dirty[kind] = false;
+    video.problems = video.problems || {}; video.problems[kind] = r.problem;
+    if (kind === "script") { const w = text.split(/\s+/).filter(Boolean).length; video.words = w; video.minutes = Math.round(w / 15) / 10; }
+    render();
+    $("#saveStatus").innerHTML = r.problem ? '<span class="status bad">Saved, but check the problem above</span>' : '<span class="status good">Saved ✓</span>';
+    loadState();
+    return !r.problem;
+  } catch (err) { toast("Couldn't save: " + err.message); return false; }
+}
+
+document.addEventListener("keydown", ev => {
+  if ((ev.ctrlKey || ev.metaKey) && ev.key.toLowerCase() === "s" && $("#editor")) { ev.preventDefault(); save(tab); }
+});
+window.addEventListener("beforeunload", ev => { if (Object.values(dirty).some(Boolean)) { ev.preventDefault(); ev.returnValue = ""; } });
+
+function mediaUrl(file) { return `/media/${enc(current)}/${file.split("/").map(enc).join("/")}?v=${(video.versions || {})[file] || Date.now()}`; }
+
+function renderBuild() {
+  const v = video;
+  const which = v.final ? "script.mp4" : v.preview ? "script_preview.mp4" : null;
+  const job = state.job || {};
+  const busy = job.state === "running" || job.state === "cancelling";
+  $("#pane").innerHTML = `
+    <div class="card">
+      <h2>Build</h2>
+      <div class="buildbar">
+        <button class="btn" data-run="preview" ${busy ? "disabled" : ""}>▶ Quick preview</button>
+        <button class="btn primary" data-run="final" ${busy ? "disabled" : ""}>Final 1080p video</button>
+        <button class="btn" data-run="thumbs" ${busy ? "disabled" : ""}>Thumbnails only</button>
+      </div>
+      <p class="hint" style="margin-top:8px">Preview is fast and small — use it to check timing and see what's missing. The final video takes 10–20 minutes.</p>
+      <div id="jobBox"></div>
+    </div>
+    ${(v.missing || []).length ? `<div class="card"><h2>Missing files <span class="muted" style="font-weight:400">— placeholders were used</span></h2>
+      <p class="hint">Upload a file for each one; it's saved with the exact name the video needs. Then build again.</p>
+      <ul class="missing">${v.missing.map((m, i) => `<li class="${m.exists ? "done" : ""}"><div><code>${esc(m.path)}</code><div class="what">${esc(m.text)}</div></div>
+        ${m.exists ? '<span class="status good">added ✓</span>' : `<label class="btn small">Upload<input type="file" hidden data-path="${esc(m.path)}"></label>`}</li>`).join("")}</ul></div>` : ""}
+    ${which ? `<div class="card"><div class="row" style="justify-content:space-between"><h2 style="margin:0">Watch</h2>
+        <div class="row">${v.preview ? `<button class="btn small ${which === "script_preview.mp4" ? "" : ""}" data-watch="script_preview.mp4">Preview</button>` : ""}
+        ${v.final ? `<button class="btn small" data-watch="script.mp4">Final</button>` : ""}</div></div>
+        <video id="player" controls preload="metadata" src="${mediaUrl(which)}" style="margin-top:10px"></video>
+        <div class="row" style="margin-top:10px">
+          ${v.final ? `<a class="btn small" href="${mediaUrl("script.mp4")}" download>Download final video</a>` : ""}
+          ${v.srt ? `<a class="btn small" href="${mediaUrl("script.srt")}" download>Captions (.srt)</a>` : ""}
+        </div></div>` : ""}
+    ${v.thumbs.length ? `<div class="card"><h2>Thumbnails</h2><p class="hint">Upload all of them to YouTube's Test &amp; Compare (Studio → your video → Thumbnail).</p>
+      <div class="thumbs">${v.thumbs.map(t => `<figure><img src="${mediaUrl(t)}" alt="${esc(t)}" loading="lazy"><figcaption>${esc(t)}<a href="${mediaUrl(t)}" download>download</a></figcaption></figure>`).join("")}</div></div>` : ""}
+    ${v.credits ? `<div class="card"><div class="row" style="justify-content:space-between"><h2 style="margin:0">Credits for the description</h2>
+      <button class="btn small" id="copyCredits">Copy</button></div><pre class="log" style="max-height:160px">${esc(v.credits)}</pre></div>` : ""}
+    <div class="card"><h2>Add files</h2>
+      <div class="grid2"><div>
+        <label class="hint" for="destSel">Put them in</label><br>
+        <select id="destSel"><option value="screenshots">screenshots</option><option value="stock">stock (clips & photos)</option>
+          <option value="people">people (photos of people)</option><option value="logos">logos</option><option value="charts">charts</option>
+          <option value="">music (.mp3, top folder)</option></select>
+        <p class="hint" style="margin-top:8px">Use the exact file name the shot list mentions.</p>
+      </div>
+      <div class="drop" id="drop">Drop files here, or <label style="color:var(--cyan);cursor:pointer">choose<input type="file" id="pickFiles" multiple hidden></label></div></div>
+      ${Object.keys(v.assets || {}).length ? `<details style="margin-top:12px"><summary class="muted">Files already in this video</summary>
+        <div class="kv" style="margin-top:8px">${Object.entries(v.assets).map(([k, files]) => `<b>${esc(k)}</b><span class="muted">${files.map(esc).join(", ")}</span>`).join("")}</div></details>` : ""}
+    </div>`;
+  document.querySelectorAll("[data-run]").forEach(b => b.onclick = () => run(b.dataset.run));
+  document.querySelectorAll("[data-watch]").forEach(b => b.onclick = () => { $("#player").src = mediaUrl(b.dataset.watch); $("#player").play(); });
+  document.querySelectorAll("input[data-path]").forEach(inp => inp.onchange = () => inp.files[0] && upload(inp.files[0], inp.dataset.path));
+  if ($("#copyCredits")) $("#copyCredits").onclick = () => navigator.clipboard.writeText(v.credits).then(() => toast("Copied"));
+  const drop = $("#drop");
+  const many = files => [...files].forEach(f => { const d = $("#destSel").value; upload(f, d ? `${d}/${f.name}` : f.name); });
+  drop.ondragover = e => { e.preventDefault(); drop.classList.add("over"); };
+  drop.ondragleave = () => drop.classList.remove("over");
+  drop.ondrop = e => { e.preventDefault(); drop.classList.remove("over"); many(e.dataTransfer.files); };
+  $("#pickFiles").onchange = e => many(e.target.files);
+  renderJob();
+}
+
+async function upload(file, path) {
+  toast(`Uploading ${file.name}…`, 1500);
+  try {
+    await api(`/api/videos/${enc(current)}/upload?path=${enc(path)}`, {method: "PUT", body: file});
+    toast(`Saved as ${path}`);
+    await loadState();
+    await openVideo(current, true);
+  } catch (err) { toast("Upload failed: " + err.message, 6000); }
+}
+
+async function run(kind) {
+  try {
+    await api(`/api/videos/${enc(current)}/run`, {method: "POST", body: JSON.stringify({kind})});
+    logNext = 0; logLines = [];
+    state.job = {state: "running", kind, video: current, stage: "Starting…", pct: 0, lines: []};
+    if (tab !== "build") { tab = "build"; render(); } else renderBuild();
+    watchJob(state.job);
+  } catch (err) { toast(err.message, 6000); }
+}
+
+let logLines = [];
+function renderJob() {
+  const box = $("#jobBox");
+  const job = state.job || {};
+  const badge = $("#jobBadge");
+  const running = job.state === "running" || job.state === "cancelling";
+  badge.innerHTML = running ? `<span class="status warn">● Building ${esc(job.video || "")}: ${esc(job.stage)} ${job.pct ? job.pct + "%" : ""}</span>` : "";
+  if (!box || !job.state || job.state === "idle" || (job.video && job.video !== current)) { if (box) box.innerHTML = ""; return; }
+  const secs = Math.round(((job.ended || Date.now() / 1000) - (job.started || Date.now() / 1000)));
+  const time = secs ? `${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, "0")}` : "";
+  const label = {running: "Working", cancelling: "Stopping…", done: "Done ✓", failed: "Stopped with a problem", cancelled: "Cancelled"}[job.state] || job.state;
+  const cls = {done: "good", failed: "bad", cancelled: "warn"}[job.state] || "";
+  box.innerHTML = `
+    <div class="row" style="justify-content:space-between;margin-top:14px">
+      <div><b class="status ${cls}">${label}</b> <span class="muted">· ${esc(job.stage || "")}${job.steps ? ` (step ${job.step} of ${job.steps})` : ""} · ${time}</span></div>
+      ${running ? '<button class="btn small danger" id="cancelBtn">Cancel</button>' : ""}
+    </div>
+    <div class="progress ${running && !job.pct ? "indet" : ""}"><div style="width:${job.pct || 0}%"></div></div>
+    <details ${job.state === "failed" ? "open" : ""}><summary class="muted">Details</summary><pre class="log" id="log"></pre></details>`;
+  $("#log").textContent = logLines.join("\n");
+  $("#log").scrollTop = 1e9;
+  if ($("#cancelBtn")) $("#cancelBtn").onclick = () => api("/api/job/cancel", {method: "POST", body: "{}"});
+}
+
+function watchJob(job) {
+  if (job && (job.state === "running" || job.state === "cancelling")) {
+    if (!poll) poll = setInterval(pollJob, 1000);
+  }
+}
+async function pollJob() {
+  let job;
+  try { job = await api(`/api/job?since=${logNext}`); } catch (e) { return; }
+  if (job.lines) { logLines.push(...job.lines); logLines = logLines.slice(-2000); logNext = job.next; }
+  state.job = job;
+  renderJob();
+  if (job.state !== "running" && job.state !== "cancelling") {
+    clearInterval(poll); poll = null;
+    if (job.state === "done") toast(job.kind === "update" ? "Update finished. Restart Studio (close and reopen it) to use the new version." : "Build finished ✓", 5000);
+    if (job.state === "failed") toast("The build stopped — open Details to see why.", 6000);
+    await loadState();
+    if (current) await openVideo(current, true);
+  }
+}
+
+// --- new video
+function newVideo() { $("#newTitle").value = ""; $("#newDialog").showModal(); $("#newTitle").focus(); }
+$("#newBtn").onclick = newVideo; $("#newBtn2").onclick = newVideo;
+$("#newCancel").onclick = () => $("#newDialog").close();
+$("#newTitle").onkeydown = e => { if (e.key === "Enter") $("#newCreate").click(); };
+$("#newCreate").onclick = async () => {
+  try {
+    const r = await api("/api/videos", {method: "POST", body: JSON.stringify({title: $("#newTitle").value})});
+    $("#newDialog").close(); current = null; await loadState(); await openVideo(r.name);
+  } catch (err) { toast(err.message); }
+};
+$("#mobileSelect").onchange = e => openVideo(e.target.value);
+
+// --- settings
+$("#settingsBtn").onclick = () => {
+  $("#voiceList").innerHTML = state.voices.map(v => `<label><input type="radio" name="voice" value="${v.id}" ${v.id === state.voice ? "checked" : ""}>
+    <span><b>${v.id}</b> <span class="muted">${esc(v.label)}</span></span>
+    ${v.sample ? `<audio controls preload="none" src="/samples/${v.id}.wav" style="height:30px;max-width:180px"></audio>` : '<span class="muted" style="font-size:12px">no sample yet</span>'}</label>`).join("");
+  $("#keyInput").value = "";
+  $("#keyNow").textContent = state.pixabay ? `saved (${state.pixabay})` : "no key saved";
+  $("#updateRow").style.display = state.windows ? "" : "none";
+  $("#settings").showModal();
+};
+$("#settingsClose").onclick = () => $("#settings").close();
+$("#settingsSave").onclick = async () => {
+  const voice = (document.querySelector("input[name=voice]:checked") || {}).value;
+  const key = $("#keyInput").value.trim();
+  try {
+    await api("/api/settings", {method: "POST", body: JSON.stringify(Object.assign({voice}, key ? {pixabay_key: key} : {}))});
+    $("#settings").close(); toast("Settings saved"); loadState();
+  } catch (err) { toast(err.message); }
+};
+$("#updateBtn").onclick = async () => {
+  try { await api("/api/update", {method: "POST", body: "{}"}); $("#settings").close(); logLines = []; logNext = 0;
+    state.job = {state: "running", kind: "update", stage: "Checking for updates"}; watchJob(state.job); renderJob(); toast("Checking for updates…"); }
+  catch (err) { toast(err.message); }
+};
+
+loadState().then(() => { if (state && !state.ffmpeg) toast("FFmpeg isn't installed yet — run SETUP.bat once.", 8000); })
+  .catch(err => { $("#view").innerHTML = `<div class="empty"><h1>Studio isn't responding</h1><p class="muted">${esc(err.message)}</p></div>`; });
+</script>
+</body>
+</html>
