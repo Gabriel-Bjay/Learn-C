@@ -76,8 +76,11 @@ Ok "venv folder ready"
 # 4. Voice + image libraries --------------------------------------------------
 Step 4 "Voice and image libraries (the slow part - several GB)"
 & $Py -m pip install --upgrade pip --quiet
-& $Py -m pip install "kokoro>=0.9.4" soundfile pillow
+& $Py -m pip install "kokoro>=0.9.4" soundfile pillow playwright
 if ($LASTEXITCODE -ne 0) { Fail "Library install failed - check your internet connection and run SETUP again." }
+Write-Host "      Installing the hidden browser used for automatic screenshots..."
+& $Py -m playwright install chromium
+if ($LASTEXITCODE -ne 0) { Fail "The screenshot browser didn't install - check your internet connection and run SETUP again." }
 Ok "libraries installed"
 
 # 5. Settings: voice + optional Pixabay key -----------------------------------

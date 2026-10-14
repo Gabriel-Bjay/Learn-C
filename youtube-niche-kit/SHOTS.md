@@ -69,10 +69,17 @@ One visual per line: `paragraph: type: value`
 
 | Type | What it does |
 |---|---|
-| `screenshot`, `chart`, `image` | Shows a picture with a slow zoom. Pictures that aren't 16:9 sit on the navy background |
-| `text` | A navy text card. `Headline \| smaller line` (the `\|` part is optional) |
-| `stock` | A matching free stock clip, downloaded automatically (Pixabay key) or saved by hand. Repeat a search and you get a different clip |
-| `video`, `clip` | Your own video file. It's trimmed, or looped, to fit |
+| `screenshot: https://link \| phrase` | **Captured automatically**: opens the article, closes pop-ups, highlights the phrase in yellow (optional). Some sites block it; then you're told the exact file name to save by hand |
+| `screenshot`, `chart`, `image` + file | Your own picture, with a smooth slow zoom |
+| `stock: search words` | Free stock **video** clip (Pixabay key, or saved by hand) |
+| `photo: search words` | Free stock **photo** (Pixabay key, or saved by hand) |
+| `person: Full Name` | The person's photo from Wikipedia, **only if freely licensed**. The credit line is written to `credits.txt` for your description |
+| `text: Headline \| smaller line` | A plain navy text card. Use sparingly |
+| `video`, `clip` | Your own video file |
+
+**Overlays:** add `>> HEADLINE | smaller line` after any stock, photo, person, screenshot or chart line to put text on top of it, for example `stock: stack of money cash >> $1.75 BILLION | raised`.
+
+**Transitions:** each shot fades softly through navy (`--fade 0` turns this off).
 
 Rules:
 - **Several lines for one paragraph** split that paragraph's time evenly, in order.
