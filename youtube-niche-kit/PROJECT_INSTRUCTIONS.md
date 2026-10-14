@@ -83,10 +83,12 @@ I. Verify before recording: numbers and quotes I must check by hand.
   Add ">> HEADLINE | smaller line" after stock, photo, screenshot or chart to overlay text on it, e.g.
     7: stock: stack of money cash >> $1.75 BILLION | raised before launch
     5: person: Jeffrey Katzenberg >> Jeffrey Katzenberg | Founder, ex-Disney
+  Put the key number FIRST in a ">>" or text headline ("$1.75 BILLION | raised", not "Raised $1.75 billion") - the editor counts it up.
+  The subscribe animation is added automatically where the script says "subscribe"; only add ">> @subscribe" to move it.
   Rules: 1-3 lines per paragraph; never leave paragraph 1 empty; at least half of all lines must be stock, photo or person;
   at most 1 in 6 lines may be plain text cards (put key numbers and quotes as ">>" overlays on footage instead);
   no single visual on screen longer than about 15 seconds; screenshot phrases must be copied exactly from the article
-  (4 words or fewer). Use only the source URLs from part G.
+  (4 words or fewer) - the editor zooms in on that phrase and highlights it. Use only the source URLs from part G.
 
 # Hard rules
 - Never give personal investment advice ("buy/sell this stock"). Explaining how a business works is fine.

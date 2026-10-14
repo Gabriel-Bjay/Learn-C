@@ -230,3 +230,87 @@ class VisualsV2Tests(unittest.TestCase):
         self.assertEqual(mv.fade_filter(3, 0.25), "null")          # too short to fade
         self.assertIn("fade=t=in", mv.fade_filter(90, 0.25))
         self.assertIn("st=2.750", mv.fade_filter(90, 0.25))
+
+
+class AnimationTests(unittest.TestCase):
+    def test_count_up(self):
+        self.assertEqual(mv.count_up("$1.75 BILLION", 1), "$1.75 BILLION")
+        self.assertEqual(mv.count_up("$1.75 BILLION", 0.5), "$0.88 BILLION")
+        self.assertEqual(mv.count_up("≈ $2,800", 0.5), "≈ $1,400")
+        self.assertEqual(mv.count_up("75+ SHOWS", 0), "0+ SHOWS")
+        self.assertEqual(mv.count_up("1.7M downloads in week one", 0), "0.0M downloads in week one")
+        for unchanged in ["Year 0 → Year 2 → Year 7", "6½ MONTHS", "$300–350 MILLION", "Problem #2", "Timing?"]:
+            self.assertEqual(mv.count_up(unchanged, 0.3), unchanged)
+
+    def test_split_extras(self):
+        self.assertEqual(mv.split_extras("stock", "money >> $1B | raised >> @subscribe"),
+                         ("money", "$1B | raised", True))
+        self.assertEqual(mv.split_extras("text", "Enjoying this? | sub >> @Subscribe"),
+                         ("Enjoying this? | sub", None, True))
+        self.assertEqual(mv.split_extras("photo", "city"), ("city", None, False))
+
+    def test_subscribe_moment_follows_the_voiceover(self):
+        timings = {"duration": 9.0, "paragraphs": [
+            {"n": 1, "start": 0.2, "end": 2.4, "text": "Intro."},
+            {"n": 2, "start": 3.0, "end": 8.0, "text": "If you like this, please subscribe to the channel."},
+        ]}
+        timeline = mv.build_timeline(timings, mv.parse_shots("1: text: a\n2: text: b\n2: text: c"))
+        i, at = mv.subscribe_moment(timings, timeline)
+        self.assertEqual(i, 1)  # "subscribe" is said in the first half of paragraph 2
+        self.assertGreater(at, 0.3)
+        self.assertIsNone(mv.subscribe_moment({"duration": 1, "paragraphs": [
+            {"n": 1, "start": 0, "end": 1, "text": "500,000 subscribers"}]}, timeline))
+
+    def test_merge_line_boxes(self):
+        boxes = mv.merge_line_boxes([[10, 100, 60, 120], [62, 101, 90, 121], [10, 130, 40, 150]])
+        self.assertEqual(boxes, [(10, 100, 90, 121), (10, 130, 40, 150)])
+
+    @unittest.skipUnless(HAVE_PIL, "needs Pillow")
+    def test_highlighter_makes_text_dark_on_yellow_on_any_background(self):
+        from PIL import Image, ImageDraw
+        for bg, ink in [((255, 255, 255), (0, 0, 0)), ((10, 130, 50), (255, 255, 255))]:
+            region = Image.new("RGB", (60, 20), bg)
+            ImageDraw.Draw(region).rectangle([(20, 5), (40, 15)], fill=ink)
+            out = mv.highlighted(region)
+            self.assertEqual(out.getpixel((2, 2)), mv.MARKER)       # background -> yellow
+            self.assertLess(sum(out.getpixel((30, 10))), 100)       # text -> dark
+
+    @unittest.skipUnless(HAVE_PIL, "needs Pillow")
+    def test_focus_camera_ends_on_the_phrase(self):
+        from PIL import Image
+        with tempfile.TemporaryDirectory() as d:
+            page = Path(d) / "page.png"
+            Image.new("RGB", (2560, 1600), "white").save(page)
+            scene = mv.FocusScene(page, {"boxes": [[1200, 800, 1500, 860]], "mark": True}, 90, (480, 270))
+            x0, y0, x1, y1 = scene.target
+            self.assertAlmostEqual((x1 - x0) / (y1 - y0), 16 / 9, places=2)
+            bx0, by0, bx1, by1 = scene.boxes[0]
+            self.assertTrue(x0 <= bx0 and bx1 <= x1 and y0 <= by0 and by1 <= y1)
+            first, last = scene.frame(0, 0), scene.frame(89, 3.0)
+            self.assertEqual(first.size, (480, 270))
+            self.assertIn(mv.MARKER, [c for _, c in last.getcolors(480 * 270)])  # highlighter drawn
+
+    @unittest.skipUnless(HAVE_FFMPEG and HAVE_PIL, "needs ffmpeg and Pillow")
+    def test_subscribe_added_where_voiceover_says_it(self):
+        with tempfile.TemporaryDirectory() as d:
+            d = Path(d)
+            subprocess.run(["ffmpeg", "-loglevel", "error", "-f", "lavfi", "-i", "sine=duration=9",
+                            "-ar", "24000", str(d / "voice.wav")], check=True)
+            timings = json.loads(json.dumps(TIMINGS))
+            timings["paragraphs"][2]["text"] = "A like or a subscribe helps."
+            (d / "voice.timings.json").write_text(json.dumps(timings))
+            (d / "shots.txt").write_text("1: text: $1.75B | raised\n3: text: Thanks\n")
+            seen = {}
+            real = mv.render_job
+
+            def spy(job, index, *a, **k):
+                seen[index] = job.get("subscribe")
+                return real(job, index, *a, **k)
+            mv.render_job = spy
+            try:
+                mv.make_video(d / "voice.wav", d / "shots.txt", d / "out.mp4", size=(480, 270),
+                              preset="ultrafast", fetch=lambda *a: None)
+            finally:
+                mv.render_job = real
+            self.assertIsNone(seen[0])
+            self.assertIsNotNone(seen[1])
