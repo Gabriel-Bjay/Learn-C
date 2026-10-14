@@ -4,7 +4,7 @@
 1. your voiceover (`.wav`) and its `.timings.json`, which `voiceover.py` writes automatically, and
 2. a **shot list** (`shots.txt`) that says what's on screen for each paragraph.
 
-It handles the timing, the slow zoom on images, text cards in Work Rewired colours, stock footage, background music, and the final export. Your manual work is collecting screenshots, plus a quick watch-through at the end.
+It handles the timing, camera moves, animated text and charts, the highlighter on article screenshots, the subscribe animation, stock footage, background music, and the final export. Your manual work is collecting screenshots, plus a quick watch-through at the end.
 
 ---
 
@@ -69,15 +69,23 @@ One visual per line: `paragraph: type: value`
 
 | Type | What it does |
 |---|---|
-| `screenshot: https://link \| phrase` | **Captured automatically**: opens the article, closes pop-ups, highlights the phrase in yellow (optional). Some sites block it; then you're told the exact file name to save by hand |
+| `screenshot: https://link \| phrase` | **Captured automatically**: opens the article and closes pop-ups. In the video the camera glides in to the phrase and a yellow highlighter sweeps across it. Without a phrase it focuses on the headline. Some sites block it; then you're told the exact file name to save by hand |
 | `screenshot`, `chart`, `image` + file | Your own picture, with a smooth slow zoom |
 | `stock: search words` | Free stock **video** clip (Pixabay key, or saved by hand) |
 | `photo: search words` | Free stock **photo** (Pixabay key, or saved by hand) |
 | `person: Full Name` | The person's photo from Wikipedia, **only if freely licensed**. The credit line is written to `credits.txt` for your description |
-| `text: Headline \| smaller line` | A plain navy text card. Use sparingly |
+| `text: Headline \| smaller line` | A navy text card with a slowly drifting background; the text animates in. Use sparingly |
 | `video`, `clip` | Your own video file |
 
 **Overlays:** add `>> HEADLINE | smaller line` after any stock, photo, person, screenshot or chart line to put text on top of it, for example `stock: stack of money cash >> $1.75 BILLION | raised`.
+
+### Animations (automatic)
+- **Numbers count up:** when a headline starts with one number (`$1.75 BILLION`, `75+ SHOWS`, `≈ $2,800`) it ticks up from 0. So put the key number first.
+- **Text** slides up and fades in, line by line, with the cyan bar growing in.
+- **Charts** draw themselves in from left to right.
+- **Photos and footage** get slow camera moves that alternate: push in, pull out, pan.
+- **Subscribe button:** where the voiceover first says "subscribe", a SUBSCRIBE button pops up, a cursor clicks it (it turns to SUBSCRIBED) and rings the bell. To put it somewhere else, add `>> @subscribe` to that line, e.g. `21: stock: person smiling at phone >> @subscribe`. `--no-subscribe` turns it off.
+- `--no-animations` makes text appear at once and skips the highlighter sweep and the chart reveal.
 
 **Transitions:** each shot fades softly through navy (`--fade 0` turns this off).
 
