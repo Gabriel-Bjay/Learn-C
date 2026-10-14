@@ -1,9 +1,22 @@
 # Work Rewired - make a video. Run by double-clicking MAKE-VIDEO.bat.
 # Asks which video and whether you want a quick preview or the final 1080p file.
 
+param([switch]$NoUpdate)
+
 $ErrorActionPreference = "Continue"  # check $LASTEXITCODE instead (stderr progress is normal)
 $Root = Split-Path -Parent $PSScriptRoot
 Set-Location $Root
+
+# Get the latest tools first. If this script itself was updated, restart with the new one.
+$updater = Join-Path $PSScriptRoot "update.ps1"
+if (-not $NoUpdate -and (Test-Path $updater)) {
+    $before = (Get-FileHash -LiteralPath $PSCommandPath).Hash
+    & $updater -Auto
+    if ((Get-FileHash -LiteralPath $PSCommandPath).Hash -ne $before) {
+        & powershell -NoProfile -ExecutionPolicy Bypass -File $PSCommandPath -NoUpdate
+        exit $LASTEXITCODE
+    }
+}
 
 function Fail($text) {
     Write-Host ""
