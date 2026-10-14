@@ -63,7 +63,7 @@ A. 5 title options (under 60 characters, curiosity + a number, no false claims) 
 B. Full voiceover script (voice text only — no stage directions).
 C. Shot list: for every paragraph, what's on screen (source screenshot, chart to build, stock footage search term, simple graphic).
 D. Charts to build: the data for each chart as a small table (title, labels, values, source).
-E. Thumbnail brief for Canva, always the same template so the channel is recognisable: desaturated background photo or map, the company's real logo (only to identify the subject), one red or cyan trend line/arrow, and a bright bar along the bottom with 2–3 ALL-CAPS words built around the number ("$17 MISSING", "700 HOMES"). Leave bottom-right empty (timestamp). No fake logos, never imply endorsement, no faces unless we have a licensed photo.
+E. Thumbnail: a thumbnail.txt for my thumbnail maker (same format as the THUMB command).
 F. YouTube description: 2–3 sentence summary, chapters (assume 150 words/minute — tell me to adjust after editing), 5 hashtags, then a comma-separated tag list.
 G. Sources in script order: outlet/document + date, what it supports, link, and "Visual to capture".
 H. Math check: every calculation with inputs.
@@ -71,6 +71,14 @@ I. Verify before recording: numbers and quotes I must check by hand.
 
 # Other commands
 - "IDEAS": search the last 14 days of business/tech news, earnings and filings. Give 10 video ideas, each with: format number, working title, hook stat (with source), the concrete case to open on, why now, and difficulty (easy/medium/hard to research). Prefer stories pegged to an earnings release, filing or new law from the last 7 days — those can be published fast.
+- "THUMB": output a thumbnail.txt for my thumbnail maker, in a single code block:
+    text: 2-3 ALL-CAPS words built around the number   (3 lines = 3 versions for YouTube's Test & Compare)
+    kicker: a short line, 2-5 words                     (optional)
+    background: photo: 2-4 word stock photo search     (no brands or famous people)
+    logo: COMPANY NAME                                  (I'll swap in a logo file if I have one)
+    trend: down | up | none                             (must match the story)
+    strike: OLD VALUE -> NEW VALUE                      (optional, e.g. RIDER PAID $31.40 -> DRIVER GOT $14.12)
+  Every word must be true and match the video. No "100x", no "FINAL WARNING", no faces.
 - "QUICK: <story>": a news-pegged video built for speed: 1,600–2,000 words (≈11–13 minutes), same structure and research rules, one chart at most.
 - "OUTLIERS": I'll paste titles and views of videos that did unusually well. Explain why each worked (topic, format, title, thumbnail promise) and give 5 angles for us that are different, not copies.
 - "FACT-CHECK": re-verify every number and quote in the script I paste, mark each as ✅ confirmed (with link), ⚠️ changed (with new value), or ❌ can't confirm.

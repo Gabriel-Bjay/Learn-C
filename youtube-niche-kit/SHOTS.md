@@ -99,5 +99,26 @@ Rules:
 ### Screenshots
 Press **Win + Shift + S**, select the headline or paragraph, then paste into Paint and save as `.png` using the file name from the shot list. Save them in a `screenshots/` folder next to `shots.txt`.
 
+## Thumbnails
+
+Put a `thumbnail.txt` next to `shots.txt` (in your Claude Project, type **`THUMB`**):
+
+```text
+text: $17 MISSING                  # one thumbnail per text: line -> thumbnail-1.jpg, -2, -3
+text: UBER'S CUT
+kicker: Where your fare goes       # small line, top right (optional)
+background: photo: taxi city night # free stock photo (Pixabay key), or a file: screenshots/x.png
+logo: logos/uber.png               # a logo file, or a name (UBER) for a white text badge
+trend: down                        # red falling line, up = green rising line, or none
+strike: $31.40 -> $14.12           # old value crossed out, new one below (optional)
+bar: cyan                          # cyan (default), yellow or red
+```
+
+MAKE-VIDEO makes the thumbnails after every video, or on their own with option **3** (a few seconds).
+It's the same template every time, so viewers recognise the channel. The bottom-right corner stays
+empty because YouTube puts the video length there. Upload all three versions to YouTube's
+**Test & Compare** (Studio → video → Thumbnail) and let it pick the winner. For a real logo,
+save a PNG (transparent background works best) in a `logos` folder and point `logo:` at it.
+
 ### Getting shot lists from Claude
 In your Work Rewired Claude Project, type **`SHOTS`** after a script is final. It replies with a shot list in this exact format. Save it as `shots.txt`.

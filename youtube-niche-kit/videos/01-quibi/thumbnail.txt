@@ -1,0 +1,10 @@
+# Quibi thumbnail. Each text: line makes one thumbnail (thumbnail-1.jpg, -2, -3).
+# Upload all three to YouTube's "Test & Compare" and let it pick the winner.
+text: $1.75B FLOP
+text: 6 MONTHS
+text: DEAD IN 6 MONTHS
+kicker: What went wrong
+background: photo: smartphone screen dark
+logo: QUIBI
+trend: down
+strike: RAISED $1.75B -> SOLD FOR <$100M
