@@ -1,0 +1,43 @@
+WORK REWIRED - VIDEO MAKER
+==========================
+
+FIRST TIME ONLY
+---------------
+1. Double-click SETUP.bat
+   - If Windows says "Windows protected your PC": click "More info", then "Run anyway".
+   - Wait 15-30 minutes (big downloads). Leave the window open.
+   - When asked, paste your Pixabay key and press Enter (or just press Enter to skip).
+   - At the end a folder of voice samples opens. Listen and pick your favourite.
+
+EVERY VIDEO
+-----------
+1. Inside the "videos" folder, make a folder for the video (copy 01-quibi as a template),
+   for example:  videos\02-uber
+2. Put these inside it:
+     script.txt     the voiceover text   (in your Claude Project, type: VOICE)
+     shots.txt      the shot list        (in your Claude Project, type: SHOTS)
+     screenshots\   the screenshots named in shots.txt
+     charts\        the charts named in shots.txt
+     any .mp3 file  (optional) background music from the YouTube Audio Library
+3. Double-click MAKE-VIDEO.bat, type the video's number, then 1 for a quick preview.
+   The end of the run lists anything that's still missing.
+4. When the preview looks right: MAKE-VIDEO.bat again, then 2 for the final 1080p video.
+5. Upload script.mp4 to YouTube, and upload script.srt as the captions.
+
+UPDATES
+-------
+MAKE-VIDEO.bat downloads the newest tools automatically every time it starts.
+To update without making a video, double-click UPDATE.bat.
+Updates never touch keys.txt, settings.txt, your screenshots, clips or videos.
+If you edited a file in a video folder (like shots.txt), yours is kept and the
+new version is saved next to it as shots.NEW.txt.
+
+SETTINGS (open with Notepad)
+----------------------------
+settings.txt   VOICE=am_michael
+               other voices: am_fenrir, af_heart, af_bella, bm_george, bm_fable, bf_emma
+keys.txt       PIXABAY_API_KEY=your-key
+
+IF SOMETHING GOES WRONG
+-----------------------
+If you see a red PROBLEM message, copy everything in the window and send it to Claude.
