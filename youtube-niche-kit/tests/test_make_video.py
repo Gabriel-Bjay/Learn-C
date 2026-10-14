@@ -142,3 +142,91 @@ class RenderTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+@unittest.skipUnless(HAVE_FFMPEG and HAVE_PIL, "needs ffmpeg and Pillow")
+class VisualsV2Tests(unittest.TestCase):
+    def setUp(self):
+        from PIL import Image
+        self.tmp = tempfile.TemporaryDirectory()
+        d = self.d = Path(self.tmp.name)
+        subprocess.run(["ffmpeg", "-loglevel", "error", "-f", "lavfi", "-i", "sine=duration=9",
+                        "-ar", "24000", str(d / "voice.wav")], check=True)
+        (d / "voice.timings.json").write_text(json.dumps(TIMINGS))
+        (d / "people").mkdir()
+        Image.new("RGB", (400, 600), "gray").save(d / "people" / "jane-doe.jpg")
+        Image.new("RGB", (900, 500), "white").save(d / "page.png")
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def test_people_photos_overlays_and_auto_screenshots(self):
+        captured = []
+
+        class FakeGrabber:
+            def capture(self, url, phrase, out):
+                from PIL import Image
+                captured.append((url, phrase))
+                Image.new("RGB", (1280, 800), "white").save(out)
+                return None
+
+            def close(self):
+                pass
+
+        def fake_fetch(query, occurrence, cache_dir, keys, kind="stock"):
+            return None  # no stock available -> placeholder + exact file name
+
+        (self.d / "shots.txt").write_text(
+            "1: person: Jane Doe >> Jane Doe | Founder\n"
+            "1: person: Unknown Person\n"
+            "2: screenshot: https://example.com/story | key phrase\n"
+            "3: photo: city skyline >> BIG NUMBER | detail\n"
+            "4: image: page.png >> Overlay | on an image\n")
+
+        def no_wiki(name):
+            raise LookupError("no photo on its Wikipedia page")
+
+        tl, warnings = mv.make_video(self.d / "voice.wav", self.d / "shots.txt", self.d / "out.mp4",
+                                     size=(480, 270), preset="ultrafast", fetch=fake_fetch,
+                                     person_lookup=no_wiki, grabber_factory=FakeGrabber)
+        self.assertEqual(captured, [("https://example.com/story", "key phrase")])
+        auto = list((self.d / "screenshots" / "auto").glob("example.com-*.png"))
+        self.assertEqual(len(auto), 1)
+        joined = "\n".join(warnings)
+        self.assertIn("no photo of Unknown Person", joined)
+        self.assertIn("people/unknown-person.jpg", joined)
+        self.assertIn("photo 'city skyline' -> save one as stock/city-skyline-0.jpg", joined)
+        self.assertNotIn("Jane Doe", joined)  # hand-saved photo was used
+
+        # A second run reuses the cached screenshot instead of capturing again.
+        mv.make_video(self.d / "voice.wav", self.d / "shots.txt", self.d / "out2.mp4",
+                      size=(480, 270), preset="ultrafast", fetch=fake_fetch,
+                      person_lookup=no_wiki, grabber_factory=FakeGrabber)
+        self.assertEqual(len(captured), 1)
+
+    def test_person_credit_written(self):
+        from PIL import Image
+
+        def fake_wiki(name):
+            return {"url": "http://x/photo.jpg", "license": "CC BY-SA 4.0", "artist": "A. Photographer"}
+
+        def fake_download(url, path):
+            Image.new("RGB", (300, 400), "gray").save(path, "JPEG")
+
+        path, credit = mv.fetch_person("John Smith", self.d / "people", lookup=fake_wiki, download=fake_download)
+        self.assertTrue(path.exists())
+        self.assertEqual(credit, "Photo of John Smith: A. Photographer, CC BY-SA 4.0, via Wikimedia Commons")
+        # cached: no lookup needed the second time
+        again = mv.fetch_person("John Smith", self.d / "people", lookup=None)
+        self.assertEqual(again, (path, credit))
+
+    def test_free_licence_check(self):
+        for ok in ["CC BY-SA 4.0", "CC0", "Public domain", "CC BY 2.0"]:
+            self.assertTrue(mv.FREE_LICENSE.match(ok), ok)
+        for bad in ["Fair use", "Non-free", "All rights reserved", ""]:
+            self.assertFalse(mv.FREE_LICENSE.match(bad), bad)
+
+    def test_fade_filter(self):
+        self.assertEqual(mv.fade_filter(3, 0.25), "null")          # too short to fade
+        self.assertIn("fade=t=in", mv.fade_filter(90, 0.25))
+        self.assertIn("st=2.750", mv.fade_filter(90, 0.25))
